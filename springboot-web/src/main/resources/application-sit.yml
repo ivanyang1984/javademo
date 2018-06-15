@@ -1,0 +1,32 @@
+
+
+spring:
+  datasource:
+    name: demo
+    jdbcUrl: jdbc:mysql://192.168.170.17:3306/springboot_demo?useUnicode=true&characterEncoding=UTF-8&useSSL=false&transformedBitIsBoolean=true
+    username: root
+    password: test
+    driverClassName: com.mysql.cj.jdbc.Driver
+    filters: config,log4j,stat
+    maxActive: 30
+    initialSize: 2
+    maxWait: 60000
+    minIdle: 2
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  redis:
+    host: 192.168.170.20
+#    password:
+    port: 6379
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 4
+        max-wait: -1ms
+        min-idle: 2

@@ -1,0 +1,26 @@
+server:
+  port: 10000
+
+
+spring:
+  application:
+    name: springboot-project
+  profiles:
+    active: ${env}
+  http:
+    converters:
+      preferred-json-mapper: jackson
+    encoding:
+      enabled: true
+      charset: UTF-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    timeZone: GMT+08:00
+  messages:
+    encoding: UTF-8
+
+
+logging:
+  path: ${LOGGING_PATH}
+  register-shutdown-hook: false
+
