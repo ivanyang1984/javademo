@@ -16,6 +16,7 @@ import com.vphoto.demo.springboot.exception.Validation;
 import com.vphoto.demo.springboot.facade.DemoFacade;
 import com.vphoto.demo.springboot.model.DemoModel;
 import com.vphoto.demo.springboot.model.IpModel;
+import com.vphoto.demo.springboot.model.VBoxLogModel;
 import com.vphoto.demo.springboot.model.enums.ResultEnum;
 import com.vphoto.demo.springboot.model.result.CallResult;
 import com.vphoto.demo.springboot.model.result.ReturnPageResult;
@@ -37,6 +38,14 @@ public class DemoController extends BaseController implements DemoFacade {
 
     @Autowired
     private DemoService demoService;
+
+    @Override
+    public ReturnResult<VBoxLogModel> importVBoxLog2Sensor(@RequestBody VBoxLogModel vBoxLogModel) {
+        ReturnResult<VBoxLogModel> returnResult = new ReturnResult<VBoxLogModel>(
+                ResultEnum.SUCCESS);
+//        System.out.println(vBoxLogModel.toString());
+        return returnResult;
+    }
 
     @Override
     public ReturnResult<DemoModel> createDemo(@RequestBody DemoModel demoModel){

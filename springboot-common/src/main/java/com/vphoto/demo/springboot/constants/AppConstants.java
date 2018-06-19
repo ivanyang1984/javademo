@@ -29,7 +29,7 @@ public class AppConstants {
     /**
      * 缓存key前缀
      */
-    public static final String CACHE_KEY_PRE = "dada:demo:springboot:";
+    public static final String CACHE_KEY_PRE = "vphoto:demo:springboot:";
 
     /**
      * 缓存超时时间

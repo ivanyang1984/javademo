@@ -11,6 +11,7 @@ package com.vphoto.demo.springboot.facade;
 
 import com.vphoto.demo.springboot.model.DemoModel;
 import com.vphoto.demo.springboot.model.IpModel;
+import com.vphoto.demo.springboot.model.VBoxLogModel;
 import com.vphoto.demo.springboot.model.result.ReturnPageResult;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import io.swagger.annotations.Api;
@@ -24,6 +25,18 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "测试服务接口", description="测试信息")
 @RequestMapping(value="/demo/v1")
 public interface DemoFacade {
+
+    @ApiOperation(value = "vbox 日志信息",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "POST",
+            notes="vbox 日志信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "vBoxLogModel", value = "vboxlog", required = true, dataType = "com.vphoto.demo.springboot.model.VBoxLogModel", paramType = "body")
+    })
+    @RequestMapping(value = {"/sendLog2sensor"},
+            method = {RequestMethod.POST},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ReturnResult<VBoxLogModel> importVBoxLog2Sensor(@RequestBody VBoxLogModel vBoxLogModel);
 
     @ApiOperation(value = "新建测试信息",
             produces = MediaType.APPLICATION_JSON_VALUE,
