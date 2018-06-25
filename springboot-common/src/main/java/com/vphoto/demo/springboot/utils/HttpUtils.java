@@ -223,7 +223,12 @@ public class HttpUtils {
      * @param headers http头信息
      * @return
      */
-    private static String http(String method, String url, Map<String, String> params, Map<String, String> datas, String jsonBody, Map<String, String> headers) {
+    public static String http(String method,
+                              String url,
+                              Map<String, String> params,
+                              Map<String, String> datas,
+                              String jsonBody,
+                              Map<String, String> headers) {
         logger.info("[traceId:{}] method:{} url:{} params:{} datas:{} jsonBody:{} headers:{]", HttpContext.getTraceId(),method, url,
                 null == params ? "" : JSON.toJSONString(params), null == datas ? "" : JSON.toJSONString(datas) ,
                 null == jsonBody ? "" : jsonBody, null == headers ? "" : JSON.toJSONString(headers));

@@ -1,11 +1,39 @@
 package com.vphoto.demo.springboot.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.beans.Transient;
 
 @Data
 public class VBoxLogModel {
+
+    /**
+     * mediatrace log property
+     */
+    private String timestamp;
+
+    private String version;
+
+    private String msgId;
+
+    private String id;
+
+    private String port;
+
+    private String lifeCycleType;
+
+    private String lifeCycleResult;
+
+    private String digitalId;
+
+    private String digitalVersion;
+
+    private String fsVersion;
+
+    private String taskMessage;
+
+    private String parentPhotoName;
 
     /**
      * 文件名
@@ -135,5 +163,6 @@ public class VBoxLogModel {
      * syncPip
      */
     private String vboxVersion;
+
 
 }

@@ -12,6 +12,7 @@ package com.vphoto.demo.springboot.facade;
 import com.vphoto.demo.springboot.model.DemoModel;
 import com.vphoto.demo.springboot.model.IpModel;
 import com.vphoto.demo.springboot.model.VBoxLogModel;
+import com.vphoto.demo.springboot.model.VPhotoUser;
 import com.vphoto.demo.springboot.model.result.ReturnPageResult;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import io.swagger.annotations.Api;
@@ -38,6 +39,19 @@ public interface DemoFacade {
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ReturnResult<VBoxLogModel> importVBoxLog2Sensor(@RequestBody VBoxLogModel vBoxLogModel);
 
+    @ApiOperation(value = "vbox 日志信息",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "POST",
+            notes="vbox 日志信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "vPhotoUser", value = "vPhotoUser", required = true, dataType = "com.vphoto.demo.springboot.model.VPhotoUser", paramType = "body")
+    })
+    @RequestMapping(value = {"/registerUser2sensor"},
+            method = {RequestMethod.POST},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ReturnResult<VPhotoUser> registerUser(@RequestBody VPhotoUser vPhotoUser);
+
+
     @ApiOperation(value = "新建测试信息",
             produces = MediaType.APPLICATION_JSON_VALUE,
             httpMethod = "POST",
@@ -51,7 +65,17 @@ public interface DemoFacade {
     public ReturnResult<DemoModel> createDemo(@RequestBody DemoModel demoModel);
 
 
-
+    @ApiOperation(value = "查询神策数据测试",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "POST",
+            notes="查询神策数据测试")
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "id", value = "测试对象id", required = true, dataType = "Long", paramType = "path")
+//    })
+    @RequestMapping(value = {"/demo/queryTestSensor"},
+            method = {RequestMethod.POST},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ReturnResult queryTestSensor();
 
 
     @ApiOperation(value = "查询测试信息",

@@ -36,4 +36,9 @@ public class AppConstants {
      */
     public static final Long CACHE_TIME_OUT = 30 * 60 * 1000L;
 
+    /**
+     * 神策数据导入URL
+     */
+    public static final String SA_SERVER_URL = "https://sensors.vphotos.cn:8106/sa?project=default";
+
 }
