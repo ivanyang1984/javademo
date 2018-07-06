@@ -13,11 +13,18 @@ import com.alibaba.fastjson.JSON;
 import com.vphoto.demo.springboot.web.context.HttpContext;
 import okhttp3.*;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -212,6 +219,49 @@ public class HttpUtils {
     public static String sendDelete(String url, Map<String, String> params, Map<String, String> datas, String jsonBody, Map<String, String> headers){
         return http(DELETE, url, params, datas, jsonBody, headers);
     }
+
+    public static String doGet(String url, Map<String, String> param) {
+
+        // 创建Httpclient对象
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+
+        String resultString = "";
+        CloseableHttpResponse response = null;
+        try {
+            // 创建uri
+            URIBuilder builder = new URIBuilder(url);
+            if (param != null) {
+                for (String key : param.keySet()) {
+                    builder.addParameter(key, param.get(key));
+                }
+            }
+            URI uri = builder.build();
+
+            // 创建http GET请求
+            HttpGet httpGet = new HttpGet(uri);
+
+            // 执行请求
+            response = httpclient.execute(httpGet);
+            // 判断返回状态是否为200
+            if (response.getStatusLine().getStatusCode() == 200) {
+                resultString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+                httpclient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return resultString;
+    }
+
+
 
     /**
      * 模拟HTTP请求

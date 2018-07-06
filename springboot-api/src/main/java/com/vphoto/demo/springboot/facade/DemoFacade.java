@@ -13,6 +13,8 @@ import com.vphoto.demo.springboot.model.DemoModel;
 import com.vphoto.demo.springboot.model.IpModel;
 import com.vphoto.demo.springboot.model.VBoxLogModel;
 import com.vphoto.demo.springboot.model.VPhotoUser;
+import com.vphoto.demo.springboot.model.convertlab.GroupModel;
+import com.vphoto.demo.springboot.model.convertlab.ReferralModel;
 import com.vphoto.demo.springboot.model.result.ReturnPageResult;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import io.swagger.annotations.Api;
@@ -21,6 +23,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Api(value = "测试服务接口", description="测试信息")
@@ -91,6 +95,36 @@ public interface DemoFacade {
     public ReturnResult queryById(@PathVariable("id") Long id);
 
 
+    @ApiOperation(value = "ConvertLab查看某个粉丝的推广人信息",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="v1/referralDetailsForFan?access_token=&openId=123&referPlan=c6753adc09fc49f08a6e397193ab398e&eventName=open_page")
+    @RequestMapping(value = {"/demo/v1/getWhoReferred"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ReturnResult<List<ReferralModel>> getWhoReferred();
+
+
+    @ApiOperation(value = "根据条件获取群组成员的客户详情的API",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="根据条件获取群组成员的客户详情的API")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "listId", value = "群组id", required = true, dataType = "Long", paramType = "path")
+    })
+    @RequestMapping(value = {"membersInGroup/{listId}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ReturnResult getMembersByListId(@PathVariable("listId") Long listId);
+
+    @ApiOperation(value = "查询群组",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="查询群组")
+    @RequestMapping(value = {"groups"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ReturnResult<List<GroupModel>> getGroups();
 
 
     @ApiOperation(value = "删除测试信息",
@@ -104,6 +138,16 @@ public interface DemoFacade {
             method = {RequestMethod.DELETE},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     public ReturnResult deleteById(@PathVariable("id") Long id);
+
+
+    @ApiOperation(value = "Convertlab获取AccessToken",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/security/accesstoken?grant_type=client_credentials&appid=cl02da164630fdaaf&secret=b17aee38d78778fef5dc163c7e317ddb068b315a")
+    @RequestMapping(value = {"/getTokenIfNeeded"},
+            method = {RequestMethod.DELETE},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    public String getTokenIfNeeded();
 
 
 

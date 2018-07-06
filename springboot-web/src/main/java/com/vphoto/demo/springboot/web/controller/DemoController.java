@@ -12,6 +12,7 @@
 package com.vphoto.demo.springboot.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.sensorsdata.analytics.javasdk.SensorsAnalytics;
 import com.sensorsdata.analytics.javasdk.exceptions.InvalidArgumentException;
@@ -22,6 +23,8 @@ import com.vphoto.demo.springboot.model.DemoModel;
 import com.vphoto.demo.springboot.model.IpModel;
 import com.vphoto.demo.springboot.model.VBoxLogModel;
 import com.vphoto.demo.springboot.model.VPhotoUser;
+import com.vphoto.demo.springboot.model.convertlab.GroupModel;
+import com.vphoto.demo.springboot.model.convertlab.ReferralModel;
 import com.vphoto.demo.springboot.model.enums.ResultEnum;
 import com.vphoto.demo.springboot.model.result.CallResult;
 import com.vphoto.demo.springboot.model.result.ReturnPageResult;
@@ -41,8 +44,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import static com.vphoto.demo.springboot.constants.AppConstants.CONVERTLAB_APP_ID;
+import static com.vphoto.demo.springboot.constants.AppConstants.CONVERTLAB_APP_SECRET;
 import static com.vphoto.demo.springboot.constants.AppConstants.SA_SERVER_URL;
 
 @RestController
@@ -50,6 +56,11 @@ public class DemoController extends BaseController implements DemoFacade {
 
     @Autowired
     private DemoService demoService;
+
+    /**
+     * convert api请求token
+     */
+    private String convertlabAccessToken;
 
     public static SensorsAnalytics sa = new SensorsAnalytics(new SensorsAnalytics.DebugConsumer("https://sensors.vphotos.cn:8106/sa?project=default", true));
 
@@ -116,6 +127,74 @@ public class DemoController extends BaseController implements DemoFacade {
             sa.flush();
         }
 
+        return returnResult;
+    }
+
+    @Override
+    public String getTokenIfNeeded() {
+        if (StringUtils.isBlank(convertlabAccessToken)) {
+            String accessTokenUrl = "https://api.convertlab.com/security/accesstoken";
+//            Map<String,String> param = new HashMap<String,String>();
+//            param.put("grant_type","client_credentials");
+//            param.put("appid",CONVERTLAB_APP_ID);
+//            param.put("secret",CONVERTLAB_APP_SECRET);
+//            convertlabAccessToken = HttpUtils.sendGet(accessTokenUrl,param);
+            accessTokenUrl = "https://api.convertlab.com/security/accesstoken?grant_type=client_credentials&appid=cl02da164630fdaaf&secret=b17aee38d78778fef5dc163c7e317ddb068b315a";
+            String tokenResultJson = HttpUtils.sendGet(accessTokenUrl);
+            Map json = JSONObject.parseObject(tokenResultJson);
+            convertlabAccessToken = json.get("access_token").toString();
+        }
+        return convertlabAccessToken;
+    }
+
+    @Override
+    public ReturnResult<List<ReferralModel>> getWhoReferred() {
+        ReturnResult<List<ReferralModel>> returnResult = new ReturnResult<List<ReferralModel>>(
+                ResultEnum.SUCCESS);
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("access_token", getTokenIfNeeded());
+        param.put("openId", "oCrKCs2dOgOCyLBIpmCjqxEWw-lo");
+        param.put("referPlan", "d3fa8182171d43d98217c4526ca74655");
+        param.put("eventName", "open_page");
+        String referralJsonStr = HttpUtils.doGet("https://api.convertlab.com/v1/referralDetailsForFan",param);
+        Map json = JSONObject.parseObject(referralJsonStr);
+        System.out.print(json.get("rows"));
+        List referralList = JSONArray.parseArray(json.get("rows").toString(),Object.class);
+//        List<ReferralModel> referralList = JSON.parse(json.get("rows").toString(),ReferralModel.class);
+        System.out.println(referralList.toString());
+        returnResult.setData(referralList);
+        returnResult.setMsg("success");
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult getMembersByListId(@PathVariable("listId") Long listId) {
+        ReturnResult<List<ReferralModel>> returnResult = new ReturnResult<List<ReferralModel>>(
+                ResultEnum.SUCCESS);
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("listId","56387");
+        param.put("access_token", getTokenIfNeeded());
+        String membersInGroup = HttpUtils.doGet("https://api.convertlab.com/v1/listservice/members",param);
+        Map json = JSONObject.parseObject(membersInGroup);
+        System.out.print(json.get("rows"));
+        List membersInGroupList = JSONArray.parseArray(json.get("rows").toString(),Object.class);
+        returnResult.setData(membersInGroupList);
+        returnResult.setMsg("success");
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<GroupModel>> getGroups() {
+        ReturnResult<List<GroupModel>> returnResult = new ReturnResult<List<GroupModel>>(
+                ResultEnum.SUCCESS);
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("access_token", getTokenIfNeeded());
+        String groups = HttpUtils.doGet("https://api.convertlab.com/v1/lists",param);
+        Map json = JSONObject.parseObject(groups);
+        System.out.print(json.get("rows"));
+        List groupList = JSONArray.parseArray(json.get("rows").toString(),Object.class);
+        returnResult.setData(groupList);
+        returnResult.setMsg("success");
         return returnResult;
     }
 

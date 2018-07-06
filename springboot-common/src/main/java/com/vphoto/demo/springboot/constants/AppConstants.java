@@ -41,4 +41,19 @@ public class AppConstants {
      */
     public static final String SA_SERVER_URL = "https://sensors.vphotos.cn:8106/sa?project=default";
 
+    /**
+     * Convertlab 应用名
+     */
+    public static final String CONVERTLAB_APP_NAME = "vphoto";
+
+    /**
+     * Convertlab 应用密钥
+     */
+    public static final String CONVERTLAB_APP_SECRET = "b17aee38d78778fef5dc163c7e317ddb068b315a";
+
+    /**
+     * Convertlab 应用ID
+     */
+    public static final String CONVERTLAB_APP_ID = "cl02da164630fdaaf";
+
 }
