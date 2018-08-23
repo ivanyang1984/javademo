@@ -1,0 +1,105 @@
+package com.vphoto.demo.springboot.utils;
+
+public class SQLUtils {
+
+    public static String getAccountAllFieldsSql() {
+        String accountSQL = "select id, " +//! 主键盘
+                "ownerId," +//! 客户所有人
+                "entityType," +//! 客户类型
+                "accountName," +//! 客户名称
+                "level," +//! 客户级别
+                "dbcVarchar1," +//! 企业类型
+                "parentAccountId," +//! 上级客户
+                "industryId," +//! 行业
+                "state," +//! 省份
+                "city," +//! 市
+                "recentActivityRecordTime," +//! 最新活动记录时间
+                "recentActivityCreatedBy," +//! 最新跟进人
+                "createdAt," +//! 创建日期
+                "highSeaId," +//! 所属公海
+                "createdBy," +//! 创建人
+                "updatedAt," +//! 最新修改日
+                "claimTime," +//! 认领日期
+                "updatedBy," +//! 最新修改人
+                "expireTime," +//! 到期时间
+                "srcFlg," +//! 工商注册
+                "highSeaStatus," +//! 状态
+//                "approvalStatus," +//! 审批状态
+                "dimDepart," +//! 所属部门
+                "outterDepartId," +//! 外部部门
+                "isDisturb," +//! 免打扰
+                "lockStatus," +//! 锁定状态
+                "address," +//! 寄件地址
+                "zipCode," +//! 锁定状态
+                "region," +//! 区
+                "phone," +//! 电话
+                "dbcVarchar2," +//! 手机
+                "fax," +//! 传真
+                "url," +//! 公司网址
+                "longitude," +//! 纬度
+                "latitude," +//! 纬度
+                "employeeNumber," +//! 总人数
+                "annualRevenue," +//! 销售额
+                "highSeaAccountSource," +//! 客户来源
+                "comment," +//! 备注
+                "dbcSelect19," +//! 签约状态
+//                "applicantId," +//! 审批提交人
+                "dbcVarchar3," +//! 品牌名1
+//                "dbcSelect1," +//! 是否大客户
+//                "dbcTextarea1," +//! 融资进展
+                "dbcSelect2," +//! 客户业务类型
+//                "dbcSelect3," +//! 客户业务类型
+//                "dbcVarchar5," +//! 客户业务类型
+//                "dbcSelect3," +//! 客户业务类型
+//                "dbcVarchar5," +//! 客户业务类型
+//                "dbcVarchar6," +//! 客户业务类型
+//                "dbcVarchar7," +//! 客户业务类型
+//                "dbcSelect4," +//! 客户业务类型
+//                "dbcVarchar8," +//! 客户业务类型
+//                "dbcVarchar9," +//! 客户业务类型
+                "dbcVarchar10," +//! 开户行
+                "dbcVarchar11," +//! 开票银行账号
+//                "dbcVarchar12," +//! 发票寄送地址
+                "dbcVarchar13," +//! 寄件联系人
+                "dbcVarchar14," +//! 寄件联系人电话
+                "dbcVarchar15," +//! 客户来源说明
+                "dbcVarchar16," +//! 客户所在城市
+//                "dbcVarchar17," +//! 客户业务类型
+//                "dbcReal1," +//! 客户业务类型
+//                "custCheckbox1," +//! 客户业务类型
+                "dbcSelect5," +//! 潜在商机
+                "dbcSelect6," +//! 是否标杆企业
+                "dbcVarchar18," +//! 品牌名2
+                "dbcVarchar19," +//! 品牌名3
+                "dbcVarchar20," +//! 地址
+                "dbcVarchar21," +//! 介绍人
+                "dbcSelect7," +//! 摄影师类型
+                "dbcSelect8," +//! 认证摄影师级别
+                "dbcSelect9," +//! 数码师类型
+                "dbcSelect10," +//! 认证数码师级别
+                "dbcSelect11," + //!性别
+                "dbcSelect12," +//!来源
+                "dbcVarchar22," +//!纳税人识别号
+                "dbcVarchar23," +//!开票地址
+                "dbcVarchar24," +//!开票电话
+                "dbcVarchar25," +//!主要联系人
+                "dbcSVarchar1," +//!主要联系人手机
+//                "dbcVarchar26," +//!性别
+                "dbcVarchar27," +//!国家及城市
+                "dbcSelect13," +//!一级行业
+                "dbcSelect14," +//!二级行业
+                "dbcVarchar28," +//!身份证号
+                "dbcSelect15," +//!BD客户级别
+                "dbcVarchar29," +//!旗下知名活动IP名称
+                "dbcTextarea2," +//!是否有竞品竞争
+                "dbcSelect16," +//!合作业务类型
+                "dbcSelect17," +//!合作伙伴来源
+                "dbcSelect18," +//!是否标杆企业/知名品牌
+                "dbcVarchar30," +//!业务后台客户ID
+                "dbcVarchar31," +//!CRM客户ID
+                "dbcReal2," +//!后台成交总金额
+                "dbcDate1" +//!最后成交日期
+                " from account ";
+        return accountSQL;
+    }
+}

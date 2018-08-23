@@ -94,10 +94,14 @@
         </dependency>
 
         <!-- SensorsAnalyticsSDK -->
+        <!-- 神策 -->
         <dependency>
             <groupId>com.sensorsdata.analytics.javasdk</groupId>
             <artifactId>SensorsAnalyticsSDK</artifactId>
-            <version>3.1.6</version>
+            <version>3.1.7</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/SensorsAnalyticsSDK-3.1.6-standalone.jar
+            </systemPath>
         </dependency>
 
     </dependencies>

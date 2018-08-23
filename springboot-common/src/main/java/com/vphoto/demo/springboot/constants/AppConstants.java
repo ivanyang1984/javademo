@@ -56,4 +56,36 @@ public class AppConstants {
      */
     public static final String CONVERTLAB_APP_ID = "cl02da164630fdaaf";
 
+    /**
+     * crm grant type
+     */
+    public static final String CRM_GRANT_TYPE = "password";
+
+    /**
+     * crm client id
+     */
+    public static final String CRM_CLIENT_ID = "0b42ebdbbb509489a15aaca051c0f8d3";
+
+    /**
+     * crm client secret
+     */
+    public static final String CRM_CLIENT_SECRET = "9d0f24fff546b374aaa64ded5a641b56";
+
+    /**
+     * crm redirect uri
+     */
+    public static final String CRM_REDIRECT_URI = "https://api.xiaoshouyi.com";
+
+    /**
+     * crm username
+     */
+    public static final String CRM_USERNAME = "wencheng.gao@v.photos";
+
+    /**
+     * crm password
+     */
+    public static final String CRM_PASSWORD = "VPhotos123bbJUqKQO";
+
+    public static final String CRM_QUERY_URL = "https://api.xiaoshouyi.com/data/v1/query";
+
 }
