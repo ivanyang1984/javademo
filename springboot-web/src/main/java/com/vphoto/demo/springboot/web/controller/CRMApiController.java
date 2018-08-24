@@ -2,12 +2,11 @@ package com.vphoto.demo.springboot.web.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.mysql.cj.xdevapi.JsonArray;
 import com.vphoto.demo.springboot.constants.AppConstants;
 import com.vphoto.demo.springboot.facade.CRMApi;
 import com.vphoto.demo.springboot.model.crm.VPXSYAccount;
-import com.vphoto.demo.springboot.model.crm.VPXSYAccountResult;
+import com.vphoto.demo.springboot.model.crm.VPXSYOpportunity;
+import com.vphoto.demo.springboot.model.crm.VPXSYResult;
 import com.vphoto.demo.springboot.model.crm.VPXSYTokenModel;
 import com.vphoto.demo.springboot.model.enums.ResultEnum;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
@@ -16,10 +15,7 @@ import com.vphoto.demo.springboot.utils.HttpUtils;
 import com.vphoto.demo.springboot.utils.SQLUtils;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.vphoto.demo.springboot.constants.AppConstants.CRM_QUERY_URL;
 
@@ -85,7 +81,7 @@ public class CRMApiController implements CRMApi {
         System.out.println("result is: "+ accountResultJson);
 
         //! 获取一级结果字段
-        VPXSYAccountResult accountResult = JSON.parseObject(accountResultJson, VPXSYAccountResult.class);
+        VPXSYResult accountResult = JSON.parseObject(accountResultJson, VPXSYResult.class);
         Integer totalSize =  accountResult.getTotalSize();
         Integer count = accountResult.getCount();
         String accountsStr = accountResult.getRecords();
@@ -98,6 +94,108 @@ public class CRMApiController implements CRMApi {
         ReturnResult<List<VPXSYAccount>> returnResult = new ReturnResult<List<VPXSYAccount>>(ResultEnum.SUCCESS);
         returnResult.setMsg("SUCCESS");
         returnResult.setData(accountList);
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYOpportunity>> getCrmOpportunityListByDate(String date) {
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String opportunityRequestSql = CRM_QUERY_URL+tokenStr;
+        //! 处理时间
+        Date yesterday = DateUtils.strToDate(date,"");
+        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
+
+        Long yes_timestamp = yesterday.getTime();
+        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+
+        //! 拼装account全量sql
+        String opportunitySQL1 = SQLUtils.getOpportunityFirstHalfFieldsSql() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+        String opportunitySQL2 = SQLUtils.getOpportunitySecondHalfFieldsSql() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        String opportunitySQL3 = SQLUtils.getOpportunityThirdHalfFieldsSql() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        Map<String,String> params1 = new HashMap<String, String>();
+        params1.put("q", opportunitySQL1);
+        String opportunityResultJson1 = HttpUtils.sendPost(opportunityRequestSql,params1);
+        System.out.println("result1 is: "+ opportunityResultJson1);
+
+        Map<String,String> params2 = new HashMap<String, String>();
+        params2.put("q", opportunitySQL2);
+        String opportunityResultJson2 = HttpUtils.sendPost(opportunityRequestSql,params2);
+        System.out.println("result2 is: "+ opportunityResultJson2);
+
+        Map<String,String> params3 = new HashMap<String, String>();
+        params3.put("q", opportunitySQL3);
+        String opportunityResultJson3 = HttpUtils.sendPost(opportunityRequestSql,params3);
+        System.out.println("result3 is: "+ opportunityResultJson3);
+
+        List<VPXSYOpportunity> recordList1 = new ArrayList<>();
+        List<VPXSYOpportunity> recordList2 = new ArrayList<>();
+        List<VPXSYOpportunity> recordList3 = new ArrayList<>();
+
+        int totalCount = 0;
+        try{
+            //! 获取一级结果字段
+            VPXSYResult crmResult1 = JSON.parseObject(opportunityResultJson1, VPXSYResult.class);
+            Integer totalSize1 =  crmResult1.getTotalSize();
+            Integer count1 = crmResult1.getCount();
+            String recordsStr1 = crmResult1.getRecords();
+            //！ 获取records数组
+            recordList1 = JSONArray.parseArray(recordsStr1,VPXSYOpportunity.class);
+
+            //! 获取一级结果字段
+            VPXSYResult crmResult2 = JSON.parseObject(opportunityResultJson2, VPXSYResult.class);
+            Integer totalSize2 =  crmResult2.getTotalSize();
+            Integer count2 = crmResult2.getCount();
+            String recordsStr2 = crmResult2.getRecords();
+            //！ 获取records数组
+            recordList2 = JSONArray.parseArray(recordsStr2,VPXSYOpportunity.class);
+
+            //! 获取一级结果字段
+            VPXSYResult crmResult3 = JSON.parseObject(opportunityResultJson3, VPXSYResult.class);
+            Integer totalSize3 =  crmResult3.getTotalSize();
+            Integer count3 = crmResult3.getCount();
+            String recordsStr3 = crmResult3.getRecords();
+            //！ 获取records数组
+            recordList3 = JSONArray.parseArray(recordsStr3,VPXSYOpportunity.class);
+
+            recordList1.addAll(recordList2);
+            recordList1.addAll(recordList3);
+
+            totalCount = crmResult1.getTotalSize();
+        }
+        catch (Exception e){
+
+        }
+
+//        List recordList0 = new ArrayList<>();
+//        Map<String,String> map = new HashMap<>();
+//        map.put("id","1");
+//        map.put("look","2");
+//        recordList0.add(map);
+//
+//        List recordList00 = new ArrayList<>();
+//        Map<String,String> map0 = new HashMap<>();
+//        map.put("id","1");
+//        map.put("hihi","5");
+//        recordList00.add(map);
+//
+//        recordList0.addAll(recordList00);
+
+
+        ReturnResult<List<VPXSYOpportunity>> returnResult = new ReturnResult<List<VPXSYOpportunity>>(ResultEnum.SUCCESS);
+        returnResult.setMsg("totalSize:"+totalCount+", recordList1 size :"+recordList1.size());
+        returnResult.setData(recordList1);
 
         return returnResult;
     }

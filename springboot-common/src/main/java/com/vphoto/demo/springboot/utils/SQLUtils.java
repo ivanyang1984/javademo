@@ -3,7 +3,7 @@ package com.vphoto.demo.springboot.utils;
 public class SQLUtils {
 
     public static String getAccountAllFieldsSql() {
-        String accountSQL = "select id, " +//! 主键盘
+        String accountSQL = "select id, " +//! 主键
                 "ownerId," +//! 客户所有人
                 "entityType," +//! 客户类型
                 "accountName," +//! 客户名称
@@ -101,5 +101,189 @@ public class SQLUtils {
                 "dbcDate1" +//!最后成交日期
                 " from account ";
         return accountSQL;
+    }
+
+
+    public static String getOpportunityFirstHalfFieldsSql(){
+        String opportunitySQL = "select id, " +
+                "entityType," +
+                "ownerId," +
+                "opportunityName," +
+                "priceId," +
+                "accountId," +
+                "opportunityType," +
+                "money," +
+                "lostStageId," +
+                "saleStageId," +
+                "winRate," +
+                "reasonDesc," +
+                "closeDate," +
+                "commitmentFlg," +
+                "sourceId," +
+                "projectBudget," +
+                "actualCost," +
+                "recentActivityRecordTime," +
+                "stageUpdatedAt," +
+                "createdAt," +
+                "createdBy," +
+                "updatedAt," +
+                "updatedBy," +
+                "comment," +
+                "dimDepart," +
+                "applicantId," +
+                "dbcSelect2," +
+                "lockStatus," +
+                "dbcVarchar1," +
+                "dbcDate1," +
+                "dbcVarchar2," +
+                "dbcVarchar3," +
+                "dbcVarchar4," +
+                "dbcVarchar5," +
+                "dbcVarchar6," +
+                "dbcVarchar7," +
+                "dbcVarchar8," +
+                "dbcVarchar9," +
+                "dbcVarchar10," +
+                "dbcDate2," +
+                "dbcDate3," +
+                "dbcSelect1," +
+                "dbcSelect3," +
+                "dbcSelect4," +
+                "dbcSelect5," +
+                "dbcSelect6," +
+                "dbcVarchar11," +
+                "dbcVarchar12," +
+                "dbcDate4," +
+                "dbcVarchar13," +
+                "dbcSelect7," +
+                "dbcVarchar14," +
+                "dbcJoin1 " +
+
+                " from opportunity ";
+        return opportunitySQL;
+    }
+
+    public static String getOpportunityThirdHalfFieldsSql(){
+        String opportunitySQL = "select id, " +
+
+                "dbcVarchar57," +
+                "dbcReal2," +
+                "dbcSelect26," +
+                "dbcVarchar56," +
+                "dbcSelect22," +
+                "dbcSelect28," +
+                "dbcRelation1," +
+                "dbcTextarea2," +
+                "dbcVarchar54," +
+                "dbcVarchar51," +
+                "dbcVarchar55," +
+                "dbcSelect24," +
+                "dbcDate12," +
+                "dbcSelect25," +
+                "dbcSelect27," +
+                "dbcReal1," +
+                "dbcVarchar50," +
+                "dbcTextarea3," +
+                "dbcVarchar25," +
+                "dbcSelect21," +
+                "dbcSelect23," +
+                "dbcVarchar44," +
+                "dbcVarchar26," +
+                "dbcVarchar27," +
+                "dbcDate5," +
+                "dbcVarchar28," +
+                "dbcSelect9," +
+                "dbcVarchar30," +
+                "dbcReal4," +
+                "dbcSelect10," +
+                "dbcVarchar31," +
+
+                "dbcVarchar16," +
+                "dbcVarchar17," +
+                "dbcVarchar18," +
+                "dbcInteger1," +
+                "custCheckbox1," +
+                "dbcVarchar19," +
+                "dbcVarchar20," +
+                "dbcVarchar21," +
+                "dbcVarchar22," +
+                "dbcInteger2," +
+                "dbcTextarea1," +
+                "dbcTextarea4," +
+                "dbcRelation2," +
+                "dbcVarchar24 " +
+
+                " from opportunity ";
+        return opportunitySQL;
+    }
+
+    public static String getOpportunitySecondHalfFieldsSql() {
+        String opportunitySQL = "select id, " +
+
+                "dbcDate6," +
+                "dbcVarchar32," +
+                "dbcDate7," +
+                "dbcVarchar33," +
+                "dbcSelect11," +
+                "dbcVarchar34," +
+                "dbcVarchar35," +
+                "dbcVarchar36," +
+                "dbcDate8," +
+                "dbcVarchar37," +
+                "dbcVarchar38," +
+                "dbcDate9," +
+                "dbcVarchar39," +
+                "dbcSelect14," +
+                "custCheckbox2," +
+                "dbcVarchar40," +
+                "dbcSelect16," +
+                "dbcDate10," +
+                "custCheckbox3," +
+                "custCheckbox4," +
+                "dbcVarchar42," +
+                "dbcVarchar47," +
+                "dbcVarchar48," +
+                "dbcVarchar49," +
+                "dbcVarchar52," +
+                "dbcDate11," +
+//                "dbcVarchar53," +
+                "custCheckbox5," +
+                "dbcSelect8," +
+                "dbcSelect13," +
+                "dbcVarchar43," +
+                "dbcSelect17," +
+                "dbcSelect18," +
+                "dbcSelect19," +
+                "custCheckbox6," +
+                "dbcSelect20," +
+                "dbcVarchar58," +
+                "dbcSelect29," +
+                "dbcSelect30," +
+                "dbcSelect31," +
+                "custCheckbox7," +
+                "dbcJoin2," +
+                "dbcInteger3," +
+                "dbcReal3," +
+                "dbcSelect32," +
+                "dbcSelect33," +
+                "dbcRelation3," +
+                "dbcJoin3," +
+                "dbcJoin4," +
+                "dbcJoin5," +
+                "dbcJoin6," +
+//                "dbcJoin7," +
+//                "dbcJoin8," +
+//                "dbcJoin9," +
+                "dbcJoin10," +
+//                "dbcJoin11," +
+                "dbcVarchar46," +
+                "dbcTextarea5," +
+                "dbcTextarea6," +
+                "dbcReal5," +
+                "dbcSelect15," +
+                "dbcTextarea7," +
+                "dbcVarchar45" +
+                " from opportunity ";
+        return opportunitySQL;
     }
 }

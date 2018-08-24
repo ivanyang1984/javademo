@@ -6,7 +6,7 @@ import java.util.List;
 
 
 @Data
-public class VPXSYAccountResult {
+public class VPXSYResult {
 
     private int totalSize;
 
