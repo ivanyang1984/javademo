@@ -10,10 +10,12 @@ import com.vphoto.demo.springboot.model.result.ReturnResult;
 import com.vphoto.demo.springboot.utils.DateUtils;
 import com.vphoto.demo.springboot.utils.HttpUtils;
 import com.vphoto.demo.springboot.utils.SQLUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
+import static com.vphoto.demo.springboot.constants.AppConstants.CRM_ORDER_PAYMENTS;
 import static com.vphoto.demo.springboot.constants.AppConstants.CRM_QUERY_URL;
 
 @RestController
@@ -264,6 +266,275 @@ public class CRMApiController implements CRMApi {
             returnResult.setMsg("Faided!"+ e.getCause().toString());
         }
 
+
+        return returnResult;
+    }
+
+
+//    @Override
+//    public ReturnResult<List<VPXSYOrderProduct>> getCrmOrderProductByDate(String date) {
+//
+//        //！ 刷新token
+//        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+//        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+//        //！ 执行post请求
+//        String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
+//        //! 处理时间
+//        Date yesterday = DateUtils.strToDate(date,"");
+//        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
+//
+//        Long yes_timestamp = yesterday.getTime();
+//        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+//
+//        //! 拼装account全量sql
+//        String orderProductSQL = SQLUtils.getOrderProductSQL() +
+//                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+//                " limit 1000";
+//
+//        Map<String,String> params = new HashMap<String, String>();
+//        params.put("q", orderProductSQL);
+//
+//        String orderProductResultJson = null;
+//        ReturnResult<List<VPXSYOrderProduct>> returnResult = new ReturnResult<List<VPXSYOrderProduct>>(ResultEnum.SUCCESS);
+//
+//        try{
+//            orderProductResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+//            System.out.println("result1 is: "+ orderProductResultJson);
+//            //! 获取一级结果字段
+//            VPXSYResult orderProductResult = JSON.parseObject(orderProductResultJson, VPXSYResult.class);
+//            Integer totalSize =  orderProductResult.getTotalSize();
+//            Integer count = orderProductResult.getCount();
+//            String orderProductStr = orderProductResult.getRecords();
+//
+//            //！ 获取records数组
+//            List<VPXSYOrderProduct> orderProductList = JSONArray.parseArray(orderProductStr,VPXSYOrderProduct.class);
+//            returnResult.setMsg("SUCCESS");
+//            returnResult.setData(orderProductList);
+//        }catch (Exception e){
+//            returnResult.setMsg("Faided!"+ e.getCause().toString());
+//        }
+//
+//        return returnResult;
+//    }
+
+
+    @Override
+    public ReturnResult<List<VPXSYContract>> getCrmContractListByDate(String date) {
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
+        //! 处理时间
+        Date yesterday = DateUtils.strToDate(date,"");
+        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
+
+        Long yes_timestamp = yesterday.getTime();
+        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+
+        //! 拼装account全量sql
+        String contractSQL = SQLUtils.getContractListSQL() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("q", contractSQL);
+
+        String contractResultJson = null;
+        ReturnResult<List<VPXSYContract>> returnResult = new ReturnResult<List<VPXSYContract>>(ResultEnum.SUCCESS);
+
+        try{
+            contractResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            System.out.println("result1 is: "+ contractResultJson);
+            //! 获取一级结果字段
+            VPXSYResult contractResult = JSON.parseObject(contractResultJson, VPXSYResult.class);
+            Integer totalSize =  contractResult.getTotalSize();
+            Integer count = contractResult.getCount();
+            String contractResultRecordsStr = contractResult.getRecords();
+
+            //！ 获取records数组
+            List<VPXSYContract> contractList = JSONArray.parseArray(contractResultRecordsStr,VPXSYContract.class);
+            returnResult.setMsg("SUCCESS");
+            returnResult.setData(contractList);
+        }catch (Exception e){
+            returnResult.setMsg("Faided!"+ e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYLeads>> getCrmLeadsByDate(String date) {
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
+        //! 处理时间
+        Date yesterday = DateUtils.strToDate(date,"");
+        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
+
+        Long yes_timestamp = yesterday.getTime();
+        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+
+        //! 拼装leads全量sql
+        String leadsSQL = SQLUtils.getLeadsSQL() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("q", leadsSQL);
+
+        String leadsResultJson = null;
+        ReturnResult<List<VPXSYLeads>> returnResult = new ReturnResult<List<VPXSYLeads>>(ResultEnum.SUCCESS);
+
+        try{
+            leadsResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            System.out.println("result1 is: "+ leadsResultJson);
+            //! 获取一级结果字段
+            VPXSYResult leadsResult = JSON.parseObject(leadsResultJson, VPXSYResult.class);
+            Integer totalSize =  leadsResult.getTotalSize();
+            Integer count = leadsResult.getCount();
+            String leadsResultRecordsStr = leadsResult.getRecords();
+
+            //！ 获取records数组
+            List<VPXSYLeads> leadList = JSONArray.parseArray(leadsResultRecordsStr,VPXSYLeads.class);
+            returnResult.setMsg("SUCCESS");
+            returnResult.setData(leadList);
+        }catch (Exception e){
+            returnResult.setMsg("Faided!"+ e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYPayment>> getCrmPaymentByDate(String date) {
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
+        //! 处理时间
+        Date yesterday = DateUtils.strToDate(date,"");
+        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
+
+        Long yes_timestamp = yesterday.getTime();
+        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+
+        //! 拼装payment全量sql
+        String paymentSQL = SQLUtils.getPaymentSQL() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("q", paymentSQL);
+
+        String paymentResultJson = null;
+        ReturnResult<List<VPXSYPayment>> returnResult = new ReturnResult<List<VPXSYPayment>>(ResultEnum.SUCCESS);
+
+        try{
+            paymentResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            System.out.println("result1 is: "+ paymentResultJson);
+            //! 获取一级结果字段
+            VPXSYResult paymentResult = JSON.parseObject(paymentResultJson, VPXSYResult.class);
+            Integer totalSize =  paymentResult.getTotalSize();
+            Integer count = paymentResult.getCount();
+            String paymentResultResultRecordsStr = paymentResult.getRecords();
+
+            //！ 获取records数组
+            List<VPXSYPayment> paymentList = JSONArray.parseArray(paymentResultResultRecordsStr,VPXSYPayment.class);
+            returnResult.setMsg("SUCCESS");
+            returnResult.setData(paymentList);
+        }catch (Exception e){
+            returnResult.setMsg("Faided!"+ e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<VPXSYOrderPaymentResult> getCrmPaymentList(@PathVariable String orderId) {
+
+        ReturnResult<VPXSYOrderPaymentResult> returnResult = new ReturnResult<VPXSYOrderPaymentResult>(ResultEnum.SUCCESS);
+        if (null == orderId || "".equals(orderId)) {
+            returnResult.setData(null);
+            returnResult.setMsg("orderId is null");
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            return returnResult;
+        }
+
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_ORDER_PAYMENTS+tokenStr;
+
+
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id", orderId);
+
+        String orderPaymentResultJson = null;
+        try {
+            orderPaymentResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (orderPaymentResultJson != null) {
+                VPXSYOrderPaymentResult orderPaymentResult = JSONArray.parseObject(orderPaymentResultJson,VPXSYOrderPaymentResult.class);
+                returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                returnResult.setData(orderPaymentResult);
+                returnResult.setMsg("SUCCESS");
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYUser>> getCrmUsersByDate(String date) {
+
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
+        //! 处理时间
+        Date yesterday = DateUtils.strToDate(date,"");
+        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
+
+        Long yes_timestamp = yesterday.getTime();
+        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+
+        //! 拼装user全量sql
+        String userSQL = SQLUtils.getUserSQL() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("q", userSQL);
+
+        String userResultJson = null;
+        ReturnResult<List<VPXSYUser>> returnResult = new ReturnResult<List<VPXSYUser>>(ResultEnum.SUCCESS);
+
+        try{
+            userResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            System.out.println("result1 is: "+ userResultJson);
+            //! 获取一级结果字段
+            VPXSYResult userResult = JSON.parseObject(userResultJson, VPXSYResult.class);
+            Integer totalSize =  userResult.getTotalSize();
+            Integer count = userResult.getCount();
+            String userResultResultRecordsStr = userResult.getRecords();
+
+            //！ 获取records数组
+            List<VPXSYUser> userList = JSONArray.parseArray(userResultResultRecordsStr,VPXSYUser.class);
+            returnResult.setMsg("SUCCESS");
+            returnResult.setData(userList);
+        }catch (Exception e){
+            returnResult.setMsg("Faided!"+ e.getCause().toString());
+        }
 
         return returnResult;
     }

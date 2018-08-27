@@ -88,4 +88,6 @@ public class AppConstants {
 
     public static final String CRM_QUERY_URL = "https://api.xiaoshouyi.com/data/v1/query";
 
+    public static final String CRM_ORDER_PAYMENTS = "https://api.xiaoshouyi.com/data/v1/objects/order/payment/list";
+
 }

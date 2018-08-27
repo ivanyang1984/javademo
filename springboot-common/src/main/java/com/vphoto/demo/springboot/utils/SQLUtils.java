@@ -312,7 +312,6 @@ public class SQLUtils {
                 "contactTel," +
                 "contactAddress," +
                 "payments," +
-                "balance," +
                 "cancelReason," +
                 "paymentStatus," +
                 "createdBy," +
@@ -404,4 +403,222 @@ public class SQLUtils {
                 " from _order ";
         return orderSQL;
     }
+
+    public static String getOrderProductSQL() {
+        String orderPorductSQL = "select id, " +
+                "unitPrice, " +
+                "quantity," +
+                "discount," +
+                "priceTotal," +
+                "comment," +
+                "createdBy," +
+                "standardPrice," +
+                "createdAt," +
+                "updatedBy," +
+                "updatedAt," +
+                "quantityUndelivered," +
+                "name," +
+                "orderId," +
+                "quantityDelivered," +
+                "entityType," +
+                "settleStatus," +
+                "productId," +
+                "dbcReal1," +
+                "transactionDate," +
+                "orderProductId," +
+                "amountInvoiced," +
+                "listTotal," +
+                "totalDiscountAmount," +
+                "amountUnbilled," +
+                "deltaQuantity," +
+                "deltaAmount," +
+                "orderVersion," +
+                "changeType," +
+                "originalOrderId from orderProduct ";
+
+        return orderPorductSQL;
+    }
+
+    public static String getContractListSQL() {
+
+        String contractSQL = "select id ," +
+                "title," +
+                "accountId," +
+                "opportunityId," +
+                "campaignId," +
+                "amount," +
+                "status," +
+                "startDate," +
+                "endDate," +
+                "invoiceAmount," +
+                "payBack," +
+                "notPayment," +
+                "contractCode," +
+                "ownerId," +
+                "participants," +
+                "paymentStatus," +
+                "overdueStatus," +
+                "paymentPercent," +
+                "createdAt," +
+                "createdBy," +
+                "updatedAt," +
+                "updatedBy," +
+                "dimDepart," +
+                "entityType," +
+                "lockStatus," +
+                "approvalStatus," +
+                "applicantId," +
+                "contractType," +
+                "payMode," +
+                "customerSigner," +
+                "signerId," +
+                "signDate," +
+                "dbcReal3," +
+                "dbcReal4," +
+                "dbcReal2," +
+                "dbcReal1," +
+                "comment," +
+                "dbcSelect1," +
+                "dbcSelect2," +
+                "dbcRelation1," +
+                "dbcVarchar1," +
+                "dbcSelect3," +
+                "dbcVarchar2," +
+                "dbcSelect4," +
+                "dbcSelect5 from contract ";
+        return contractSQL;
+    }
+
+    public static String getLeadsSQL() {
+
+        String leadsSQL = "select id, " +
+                "entityType," +
+                "ownerId," +
+                "status," +
+                "name," +
+                "gender," +
+                "companyName," +
+                "post," +
+                "phone," +
+                "mobile," +
+                "dbcVarchar1," +
+                "address," +
+                "email," +
+                "leadSourceId," +
+                "campaignId," +
+                "recentActivityRecordTime," +
+                "recentActivityCreatedBy," +
+                "createdAt," +
+                "createdBy," +
+                "updatedAt," +
+                "updatedBy," +
+                "lockStatus," +
+                "comment," +
+                "highSeaId," +
+                "claimTime," +
+                "dimDepart," +
+                "applicantId," +
+                "expireTime," +
+                "highSeaStatus," +
+                "approvalStatus," +
+                "leadQuality," +
+                "leadScore," +
+                "bdType," +
+                "bdSourceId," +
+                "dbcDate1," +
+                "dbcVarchar2," +
+                "dbcVarchar3," +
+                "dbcVarchar4," +
+                "dbcSelect1," +
+                "dbcVarchar5," +
+                "dbcVarchar6," +
+                "dbcVarchar7," +
+                "pinyin," +
+                "delFlg," +
+                "duplicateFlg," +
+                "opportunityId," +
+                "applyDelayTime," +
+                "accountId," +
+                "statusUpdatedAt," +
+                "releaseTime," +
+                "returnTimes," +
+                "thawTime," +
+                "isDisturb," +
+                "releaseReason from lead ";
+        return leadsSQL;
+    }
+
+    public static String getPaymentSQL() {
+
+        String paymentPlanSQL = "select id," +
+                "stage," +
+                "amount," +
+                "code," +
+                "actualTime," +
+                "type," +
+                "ownerId," +
+                "contractId," +
+                "orderId," +
+                "totalAmount," +
+                "accountId," +
+                "paymentPercent," +
+                "createdBy," +
+                "createdAt," +
+                "updatedBy," +
+                "updatedAt," +
+                "dimDepart," +
+                "lockStatus," +
+                "description," +
+                "applicantId," +
+                "approvalStatus," +
+                "entityType," +
+                "dbcSelect1," +
+                "dbcReal1," +
+                "dbcDate1," +
+                "dbcTinyint1," +
+                "dbcVarchar1," +
+                "invoiceFlg " +
+                " from payment ";
+        return paymentPlanSQL;
+    }
+
+
+    public static String getUserSQL(){
+        String userSQL = "select id," +
+                "phone," +
+                "entityType," +
+                "name," +
+                "departId," +
+                "employeeCode," +
+                "unionId," +
+                "gender," +
+                "joinAtStr," +
+                "birthday," +
+                "passwordRuleId," +
+                "hiddenYearFlg," +
+                "positionName," +
+                "rankId," +
+                "userManagerId," +
+                "languageCode," +
+                "timezone," +
+                "mobileLocationStatus," +
+                "nickName," +
+                "statusInt," +
+                "lastestLoginAt," +
+                "selfIntro," +
+                "telephone," +
+                "extNo," +
+                "expertise," +
+                "hometown," +
+                "im," +
+                "weibo," +
+                "hobby," +
+                "createdAt," +
+                "createdBy," +
+                "updatedAt," +
+                "updatedBy from user ";
+
+        return userSQL;
+    }
+
 }

@@ -1,10 +1,7 @@
 package com.vphoto.demo.springboot.facade;
 
 import com.vphoto.demo.springboot.model.VBoxLogModel;
-import com.vphoto.demo.springboot.model.crm.VPXSYAccount;
-import com.vphoto.demo.springboot.model.crm.VPXSYOpportunity;
-import com.vphoto.demo.springboot.model.crm.VPXSYOrder;
-import com.vphoto.demo.springboot.model.crm.VPXSYTokenModel;
+import com.vphoto.demo.springboot.model.crm.*;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -57,4 +54,62 @@ public interface CRMApi {
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ReturnResult<List<VPXSYOrder>> getCrmOrderListByDate(@PathVariable("date") String date);
+
+//    @ApiOperation(value = "按天获取CRM订单明细数据",
+//            produces = MediaType.APPLICATION_JSON_VALUE,
+//            httpMethod = "GET",
+//            notes="订单里的产品")
+//    @RequestMapping(value = {"/CrmOrderProductByDate"},
+//            method = {RequestMethod.GET},
+//            produces = {MediaType.APPLICATION_JSON_VALUE})
+//    ReturnResult<List<VPXSYOrderProduct>> getCrmOrderProductByDate(@PathVariable("date") String date);
+
+
+    @ApiOperation(value = "按天获取CRM合同数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="每天合同")
+    @RequestMapping(value = {"/CrmContractByDate"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYContract>> getCrmContractListByDate(@PathVariable("date") String date);
+
+    @ApiOperation(value = "按天获取CRM线索数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="每天线索")
+    @RequestMapping(value = {"/CrmLeadsByDate"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYLeads>> getCrmLeadsByDate(@PathVariable("date") String date);
+
+
+    @ApiOperation(value = "按天获取CRM订单回款数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="每天新产生的回款计划")
+    @RequestMapping(value = {"/CrmPaymentByDate"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYPayment>> getCrmPaymentByDate(@PathVariable("date") String date);
+
+    @ApiOperation(value = "根据订单ID 获取回款信息",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="根据订单ID 获取回款信息 有回款计划 开票信息 回款记录")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "订单id", required = true, dataType = "Long", paramType = "path")
+    })
+    @RequestMapping(value = {"/CrmPaymentListByOrderId/{orderId}"},
+            method = {RequestMethod.GET})
+    ReturnResult<VPXSYOrderPaymentResult> getCrmPaymentList(@PathVariable String orderId);
+
+    @ApiOperation(value = "按天获取CRM员工数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="按天获取CRM员工数据")
+    @RequestMapping(value = {"/CrmUsersByDate"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYUser>> getCrmUsersByDate(@PathVariable("date") String date);
 }
