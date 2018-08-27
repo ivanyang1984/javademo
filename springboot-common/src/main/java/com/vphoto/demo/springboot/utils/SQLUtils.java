@@ -163,59 +163,7 @@ public class SQLUtils {
         return opportunitySQL;
     }
 
-    public static String getOpportunityThirdHalfFieldsSql(){
-        String opportunitySQL = "select id, " +
 
-                "dbcVarchar57," +
-                "dbcReal2," +
-                "dbcSelect26," +
-                "dbcVarchar56," +
-                "dbcSelect22," +
-                "dbcSelect28," +
-                "dbcRelation1," +
-                "dbcTextarea2," +
-                "dbcVarchar54," +
-                "dbcVarchar51," +
-                "dbcVarchar55," +
-                "dbcSelect24," +
-                "dbcDate12," +
-                "dbcSelect25," +
-                "dbcSelect27," +
-                "dbcReal1," +
-                "dbcVarchar50," +
-                "dbcTextarea3," +
-                "dbcVarchar25," +
-                "dbcSelect21," +
-                "dbcSelect23," +
-                "dbcVarchar44," +
-                "dbcVarchar26," +
-                "dbcVarchar27," +
-                "dbcDate5," +
-                "dbcVarchar28," +
-                "dbcSelect9," +
-                "dbcVarchar30," +
-                "dbcReal4," +
-                "dbcSelect10," +
-                "dbcVarchar31," +
-
-                "dbcVarchar16," +
-                "dbcVarchar17," +
-                "dbcVarchar18," +
-                "dbcInteger1," +
-                "custCheckbox1," +
-                "dbcVarchar19," +
-                "dbcVarchar20," +
-                "dbcVarchar21," +
-                "dbcVarchar22," +
-                "dbcInteger2," +
-                "dbcTextarea1," +
-                "dbcTextarea4," +
-                "dbcRelation2," +
-                "dbcVarchar24 " +
-
-                " from opportunity ";
-        return opportunitySQL;
-    }
 
     public static String getOpportunitySecondHalfFieldsSql() {
         String opportunitySQL = "select id, " +
@@ -285,5 +233,175 @@ public class SQLUtils {
                 "dbcVarchar45" +
                 " from opportunity ";
         return opportunitySQL;
+    }
+
+    public static String getOpportunityThirdHalfFieldsSql(){
+        String opportunitySQL = "select id, " +
+
+                "dbcVarchar57," +
+                "dbcReal2," +
+                "dbcSelect26," +
+                "dbcVarchar56," +
+                "dbcSelect22," +
+                "dbcSelect28," +
+                "dbcRelation1," +
+                "dbcTextarea2," +
+                "dbcVarchar54," +
+                "dbcVarchar51," +
+                "dbcVarchar55," +
+                "dbcSelect24," +
+                "dbcDate12," +
+                "dbcSelect25," +
+                "dbcSelect27," +
+                "dbcReal1," +
+                "dbcVarchar50," +
+                "dbcTextarea3," +
+                "dbcVarchar25," +
+                "dbcSelect21," +
+                "dbcSelect23," +
+                "dbcVarchar44," +
+                "dbcVarchar26," +
+                "dbcVarchar27," +
+                "dbcDate5," +
+                "dbcVarchar28," +
+                "dbcSelect9," +
+                "dbcVarchar30," +
+                "dbcReal4," +
+                "dbcSelect10," +
+                "dbcVarchar31," +
+
+                "dbcVarchar16," +
+                "dbcVarchar17," +
+                "dbcVarchar18," +
+                "dbcInteger1," +
+                "custCheckbox1," +
+                "dbcVarchar19," +
+                "dbcVarchar20," +
+                "dbcVarchar21," +
+                "dbcVarchar22," +
+                "dbcInteger2," +
+                "dbcTextarea1," +
+                "dbcTextarea4," +
+                "dbcRelation2," +
+                "dbcVarchar24 " +
+
+                " from opportunity ";
+        return opportunitySQL;
+    }
+
+    public static String getOrderFirstHalfFieldSQL(){
+        String orderSQL = "select id, " +
+                "dbcRelation1," +
+                "po," +
+                "ro," +
+                "entityType," +
+                "orderId," +
+                "ownerId," +
+                "contractId," +
+                "accountId," +
+                "poStatus," +
+                "priceId," +
+                "opportunityId," +
+                "roStatus," +
+                "initAmount," +
+                "amount," +
+                "effectiveDate," +
+                "productsAmount," +
+                "deliveryDate," +
+                "contactName," +
+                "contactTel," +
+                "contactAddress," +
+                "payments," +
+                "balance," +
+                "cancelReason," +
+                "paymentStatus," +
+                "createdBy," +
+                "overdueStatus," +
+                "paymentPercent," +
+                "createdAt," +
+                "updatedBy," +
+                "updatedAt," +
+                "comment," +
+                "dimDepart," +
+                "dbcReal6," +
+                "dbcVarchar19," +
+                "dbcSelect9," +
+                "dbcVarchar20," +
+                "dbcReal7," +
+                "approvalStatus," +
+                "amountInvoiced," +
+                "applicantId," +
+                "transactionDate," +
+                "lockStatus," +
+                "amountUnbilled," +
+                "listTotal," +
+                "totalDiscountAmount," +
+                "dbcVarchar1," +
+                "orderVersion," +
+                "originalOrderVersion," +
+                "co," +
+                "dbcVarchar7," +
+                "originalOrderId," +
+                "dbcJoin1," +
+                "dbcReal1 " +
+                " from _order ";
+        return orderSQL;
+    }
+
+    public static String getOrderSecondHalfFieldsSQL(){
+        String orderSQL = "select id, " +
+                "dbcJoin3," +
+                "dbcJoin4," +
+                "dbcJoin5," +
+                "dbcJoin7," +
+                "dbcVarchar2," +
+                "dbcVarchar3," +
+                "dbcJoin8," +
+                "dbcJoin9," +
+                "dbcTextarea1," +
+                "dbcVarchar4," +
+                "dbcDate1," +
+                "dbcSelect2," +
+                "dbcVarchar5," +
+                "dbcSelect3," +
+                "dbcTextarea2," +
+                "dbcSelect4," +
+                "dbcInteger1," +
+                "dbcVarchar8," +
+                "dbcVarchar12," +
+                "dbcVarchar13," +
+                "dbcVarchar14," +
+                "dbcVarchar15," +
+                "dbcVarchar16," +
+                "dbcSelect5," +
+                "dbcSelect6," +
+                "dbcSelect7," +
+                "dbcReal2," +
+                "dbcReal3," +
+                "dbcSelect8," +
+                "dbcVarchar17," +
+                "dbcDate2," +
+                "dbcDate3," +
+                "dbcRelation2," +
+                "dbcJoin6," +
+                "dbcJoin10," +
+                "dbcVarchar18," +
+                "dbcReal4," +
+                "dbcReal5," +
+                "dbcSelect10," +
+                "dbcTextarea3, " +
+                "dbcSelect11," +
+                "dbcJoin11," +
+                "dbcTextarea4," +
+                "dbcTextarea5," +
+                "dbcVarchar21, " +
+                "dbcSelect12," +
+                "dbcSelect13," +
+                "dbcSelect14," +
+                "custCheckbox1," +
+                "dbcSelect15," +
+                "dbcSelect16 "+
+                " from _order ";
+        return orderSQL;
     }
 }

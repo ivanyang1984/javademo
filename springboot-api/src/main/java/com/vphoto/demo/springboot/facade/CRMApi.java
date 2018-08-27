@@ -3,6 +3,7 @@ package com.vphoto.demo.springboot.facade;
 import com.vphoto.demo.springboot.model.VBoxLogModel;
 import com.vphoto.demo.springboot.model.crm.VPXSYAccount;
 import com.vphoto.demo.springboot.model.crm.VPXSYOpportunity;
+import com.vphoto.demo.springboot.model.crm.VPXSYOrder;
 import com.vphoto.demo.springboot.model.crm.VPXSYTokenModel;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import io.swagger.annotations.Api;
@@ -47,4 +48,13 @@ public interface CRMApi {
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ReturnResult<List<VPXSYOpportunity>> getCrmOpportunityListByDate(@PathVariable("date") String date);
+
+    @ApiOperation(value = "按天获取CRM订单数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="订单")
+    @RequestMapping(value = {"/CrmOrderByDate"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYOrder>> getCrmOrderListByDate(@PathVariable("date") String date);
 }

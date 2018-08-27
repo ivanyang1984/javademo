@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.vphoto.demo.springboot.constants.AppConstants;
 import com.vphoto.demo.springboot.facade.CRMApi;
-import com.vphoto.demo.springboot.model.crm.VPXSYAccount;
-import com.vphoto.demo.springboot.model.crm.VPXSYOpportunity;
-import com.vphoto.demo.springboot.model.crm.VPXSYResult;
-import com.vphoto.demo.springboot.model.crm.VPXSYTokenModel;
+import com.vphoto.demo.springboot.model.crm.*;
 import com.vphoto.demo.springboot.model.enums.ResultEnum;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import com.vphoto.demo.springboot.utils.DateUtils;
@@ -196,6 +193,77 @@ public class CRMApiController implements CRMApi {
         ReturnResult<List<VPXSYOpportunity>> returnResult = new ReturnResult<List<VPXSYOpportunity>>(ResultEnum.SUCCESS);
         returnResult.setMsg("totalSize:"+totalCount+", recordList1 size :"+recordList1.size());
         returnResult.setData(recordList1);
+
+        return returnResult;
+    }
+
+
+    @Override
+    public ReturnResult<List<VPXSYOrder>> getCrmOrderListByDate(String date) {
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
+        //! 处理时间
+        Date yesterday = DateUtils.strToDate(date,"");
+        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
+
+        Long yes_timestamp = yesterday.getTime();
+        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+
+        //! 拼装account全量sql
+        String orderSQL1 = SQLUtils.getOrderFirstHalfFieldSQL() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        String orderSQL2 = SQLUtils.getOrderSecondHalfFieldsSQL() +
+                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
+                " limit 1000";
+
+        Map<String,String> params1 = new HashMap<String, String>();
+        params1.put("q", orderSQL1);
+
+        Map<String,String> params2 = new HashMap<String, String>();
+        params2.put("q", orderSQL2);
+
+
+        String orderResultJson1 = null;
+        String orderResultJson2 = null;
+        ReturnResult<List<VPXSYOrder>> returnResult = new ReturnResult<List<VPXSYOrder>>(ResultEnum.SUCCESS);
+
+        try {
+            orderResultJson1 = HttpUtils.sendPost(crmObjRequestSql,params1);
+            System.out.println("result1 is: "+ orderResultJson1);
+
+            orderResultJson2 = HttpUtils.sendPost(crmObjRequestSql,params2);
+            System.out.println("result2 is: "+ orderResultJson2);
+
+            //! 获取一级结果字段
+            VPXSYResult orderResult1 = JSON.parseObject(orderResultJson1, VPXSYResult.class);
+            Integer totalSize1 =  orderResult1.getTotalSize();
+            Integer count1 = orderResult1.getCount();
+            String orderStr1 = orderResult1.getRecords();
+
+            //! 获取一级结果字段
+            VPXSYResult orderResult2 = JSON.parseObject(orderResultJson2, VPXSYResult.class);
+            Integer totalSize2 =  orderResult2.getTotalSize();
+            Integer count2 = orderResult2.getCount();
+            String orderStr2 = orderResult2.getRecords();
+
+            //！ 获取records数组
+            List<VPXSYOrder> orderList1 = JSONArray.parseArray(orderStr1,VPXSYOrder.class);
+            //！ 获取records数组
+            List<VPXSYOrder> orderList2 = JSONArray.parseArray(orderStr2,VPXSYOrder.class);
+
+            orderList1.addAll(orderList2);
+
+            returnResult.setMsg("SUCCESS");
+            returnResult.setData(orderList1);
+        }catch (Exception e){
+            returnResult.setMsg("Faided!"+ e.getCause().toString());
+        }
+
 
         return returnResult;
     }
