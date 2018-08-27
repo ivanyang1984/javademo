@@ -13,4 +13,5 @@ public class VPXSYResult {
     private int count;
 
     private String records;
+
 }

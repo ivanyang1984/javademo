@@ -90,4 +90,8 @@ public class AppConstants {
 
     public static final String CRM_ORDER_PAYMENTS = "https://api.xiaoshouyi.com/data/v1/objects/order/payment/list";
 
+    public static final String CRM_RESPONSIBILITY_LIST = "https://api.xiaoshouyi.com/data/v1/objects/responsibility/list";
+
+    public static final String CRM_DEPT_TREE = "https://api.xiaoshouyi.com/data/v1/objects/depart/tree";
+
 }

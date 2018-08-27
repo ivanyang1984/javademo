@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-import static com.vphoto.demo.springboot.constants.AppConstants.CRM_ORDER_PAYMENTS;
-import static com.vphoto.demo.springboot.constants.AppConstants.CRM_QUERY_URL;
+import static com.vphoto.demo.springboot.constants.AppConstants.*;
 
 @RestController
 public class CRMApiController implements CRMApi {
@@ -534,6 +533,73 @@ public class CRMApiController implements CRMApi {
             returnResult.setData(userList);
         }catch (Exception e){
             returnResult.setMsg("Faided!"+ e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYResponsibility>> getCrmResponsibilityList() {
+        ReturnResult<List<VPXSYResponsibility>> returnResult = new ReturnResult<List<VPXSYResponsibility>>(ResultEnum.SUCCESS);
+        
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_RESPONSIBILITY_LIST+tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        String responsibilityResultJson = null;
+        try {
+            responsibilityResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (responsibilityResultJson != null) {
+                System.out.println(responsibilityResultJson);
+                VPXSYApiResult responsibilityResult = JSON.parseObject(responsibilityResultJson,VPXSYApiResult.class);
+                if (responsibilityResult!=null ) {
+                    List<VPXSYResponsibility> responsibilities = JSON.parseArray(responsibilityResult.getRecord(),VPXSYResponsibility.class);
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(responsibilities);
+                    returnResult.setMsg("SUCCESS");
+                }
+
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<VPXSYDeptNode> getCrmDepartTree() {
+        ReturnResult<VPXSYDeptNode> returnResult = new ReturnResult<VPXSYDeptNode>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_DEPT_TREE+tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        String deptResultJson = null;
+        try {
+            deptResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (deptResultJson != null) {
+                System.out.println(deptResultJson);
+                VPXSYDeptNode deptResult = JSON.parseObject(deptResultJson,VPXSYDeptNode.class);
+                if (deptResult!=null ) {
+
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(deptResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
         }
 
         return returnResult;

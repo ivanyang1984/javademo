@@ -112,4 +112,24 @@ public interface CRMApi {
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ReturnResult<List<VPXSYUser>> getCrmUsersByDate(@PathVariable("date") String date);
+
+
+    @ApiOperation(value = "获取CRM职能列表数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM职能列表数据")
+    @RequestMapping(value = {"/crm/responsibility/list"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYResponsibility>> getCrmResponsibilityList();
+
+
+    @ApiOperation(value = "获取CRM部门结构数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM部门结构数据")
+    @RequestMapping(value = {"/crm/depart/tree"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYDeptNode> getCrmDepartTree();
 }
