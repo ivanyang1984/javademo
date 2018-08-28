@@ -1,8 +1,10 @@
 package com.vphoto.demo.springboot.utils;
 
+import java.util.Date;
+
 public class SQLUtils {
 
-    public static String getAccountAllFieldsSql() {
+    public static String getFristHalfFieldsSql() {
         String accountSQL = "select id, " +//! 主键
                 "ownerId," +//! 客户所有人
                 "entityType," +//! 客户类型
@@ -24,7 +26,6 @@ public class SQLUtils {
                 "expireTime," +//! 到期时间
                 "srcFlg," +//! 工商注册
                 "highSeaStatus," +//! 状态
-//                "approvalStatus," +//! 审批状态
                 "dimDepart," +//! 所属部门
                 "outterDepartId," +//! 外部部门
                 "isDisturb," +//! 免打扰
@@ -40,33 +41,24 @@ public class SQLUtils {
                 "latitude," +//! 纬度
                 "employeeNumber," +//! 总人数
                 "annualRevenue," +//! 销售额
+                "dbcDate1 " +//!最后成交日期
+                " from account ";
+        return accountSQL;
+    }
+
+    public static String getSecondHalfAccountFieldsSQL(){
+        String accountSQL = "select id," +
                 "highSeaAccountSource," +//! 客户来源
                 "comment," +//! 备注
                 "dbcSelect19," +//! 签约状态
-//                "applicantId," +//! 审批提交人
                 "dbcVarchar3," +//! 品牌名1
-//                "dbcSelect1," +//! 是否大客户
-//                "dbcTextarea1," +//! 融资进展
                 "dbcSelect2," +//! 客户业务类型
-//                "dbcSelect3," +//! 客户业务类型
-//                "dbcVarchar5," +//! 客户业务类型
-//                "dbcSelect3," +//! 客户业务类型
-//                "dbcVarchar5," +//! 客户业务类型
-//                "dbcVarchar6," +//! 客户业务类型
-//                "dbcVarchar7," +//! 客户业务类型
-//                "dbcSelect4," +//! 客户业务类型
-//                "dbcVarchar8," +//! 客户业务类型
-//                "dbcVarchar9," +//! 客户业务类型
                 "dbcVarchar10," +//! 开户行
                 "dbcVarchar11," +//! 开票银行账号
-//                "dbcVarchar12," +//! 发票寄送地址
                 "dbcVarchar13," +//! 寄件联系人
                 "dbcVarchar14," +//! 寄件联系人电话
                 "dbcVarchar15," +//! 客户来源说明
                 "dbcVarchar16," +//! 客户所在城市
-//                "dbcVarchar17," +//! 客户业务类型
-//                "dbcReal1," +//! 客户业务类型
-//                "custCheckbox1," +//! 客户业务类型
                 "dbcSelect5," +//! 潜在商机
                 "dbcSelect6," +//! 是否标杆企业
                 "dbcVarchar18," +//! 品牌名2
@@ -84,7 +76,6 @@ public class SQLUtils {
                 "dbcVarchar24," +//!开票电话
                 "dbcVarchar25," +//!主要联系人
                 "dbcSVarchar1," +//!主要联系人手机
-//                "dbcVarchar26," +//!性别
                 "dbcVarchar27," +//!国家及城市
                 "dbcSelect13," +//!一级行业
                 "dbcSelect14," +//!二级行业
@@ -97,8 +88,7 @@ public class SQLUtils {
                 "dbcSelect18," +//!是否标杆企业/知名品牌
                 "dbcVarchar30," +//!业务后台客户ID
                 "dbcVarchar31," +//!CRM客户ID
-                "dbcReal2," +//!后台成交总金额
-                "dbcDate1" +//!最后成交日期
+                "dbcReal2 " +//!后台成交总金额
                 " from account ";
         return accountSQL;
     }
@@ -621,4 +611,59 @@ public class SQLUtils {
         return userSQL;
     }
 
+    public static String getCrmContactSQL(){
+        String contactSQL = "select id," +
+                "entityType," +
+                "ownerId," +
+                "contactName," +
+                "accountId," +
+                "depart," +
+                "post," +
+                "dbcSelect1," +
+                "dbcSelect2," +
+                "phone," +
+                "mobile," +
+                "dbcVarchar1," +
+                "weibo," +
+                "state," +
+                "address," +
+                "zipCode," +
+                "gender," +
+                "email," +
+                "birthday," +
+                "recentActivityRecordTime," +
+                "createdAt," +
+                "createdBy," +
+                "updatedAt," +
+                "updatedBy," +
+                "comment," +
+                "dimDepart," +
+                "applicantId," +
+                "approvalStatus," +
+                "lockStatus," +
+                "isDisturb," +
+                "dbcSelect3," +
+                "dbcVarchar2," +
+                "dbcSelect4," +
+                "dbcSelect5," +
+                "dbcSelect6," +
+                "dbcRelation1," +
+                "dbcVarchar3," +
+                "pinyin "+
+                " from contact ";
+        return contactSQL;
+    }
+
+
+    public static String getWhereClause(String date){
+        //! 处理时间
+        Date today = DateUtils.strToDate(date,"");
+        Date yesterday = DateUtils.addDays(today,-1);
+
+        Long today_timestamp = today.getTime();
+        Long yes_timestamp = yesterday.getTime();
+        return " where (createdAt >= " + yes_timestamp + " and createdAt <" + today_timestamp + ") " +
+//                "OR (updatedAt >= " + yes_timestamp + " and createdAt <" + today_timestamp + ")"+
+                " limit 1000";
+    }
 }

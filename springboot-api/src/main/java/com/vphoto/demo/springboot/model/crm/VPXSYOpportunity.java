@@ -2,6 +2,9 @@ package com.vphoto.demo.springboot.model.crm;
 
 import lombok.Data;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class VPXSYOpportunity {
 
@@ -330,4 +333,11 @@ public class VPXSYOpportunity {
     private String dbcVarchar45;
 
 
+    private List<Map<String,String>> members;
+
+    private List<Map<String,String>> owners;
+
+    private Map<String,String> attributes;
+
+    private List<String> products;
 }

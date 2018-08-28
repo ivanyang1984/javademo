@@ -132,4 +132,65 @@ public interface CRMApi {
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ReturnResult<VPXSYDeptNode> getCrmDepartTree();
+
+    @ApiOperation(value = "获取CRM单个部门数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM单个部门数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "部门id", required = true, dataType = "Long", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/departById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYDept> getCrmDepartTree(@PathVariable("id") String id);
+
+    @ApiOperation(value = "获取CRM联系人数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM联系人数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "date", value = "时间", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/contact/{date}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYContact>> getCrmContact(@PathVariable("date") String date);
+
+    @ApiOperation(value = "获取CRM联系人byId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="通过联系人id 获取联系人信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "联系人ID", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/contactById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYContact> getCrmContactById(@PathVariable("id") String id);
+
+    @ApiOperation(value = "获取CRM客户byId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="通过客户id 获取客户信息")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "客户ID", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/customerById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYAccount> getCrmCustomerById(@PathVariable("id") String id);
+
+
+    @ApiOperation(value = "获取CRM销售机会明细byId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="通过销售机会id 获取销售机会")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "销售机会ID", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/opportunityById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYOpportunity> getCrmOpportunityById(@PathVariable("id") String id);
 }

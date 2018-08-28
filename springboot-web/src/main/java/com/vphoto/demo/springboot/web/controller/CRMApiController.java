@@ -58,40 +58,44 @@ public class CRMApiController implements CRMApi {
         ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
         String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
         //！ 执行post请求
-        String accountRequestSql = CRM_QUERY_URL+tokenStr;
-        //! 处理时间
-        Date yesterday = DateUtils.strToDate(date,"");
-        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
-
-        Long yes_timestamp = yesterday.getTime();
-        Long b_yes_timestamp = dateBeforeYesterday.getTime();
+        String accountRequestSql = CRM_QUERY_URL + tokenStr;
 
         //! 拼装account全量sql
-        String accountSQL = SQLUtils.getAccountAllFieldsSql() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
+        String accountSQL1 = SQLUtils.getFristHalfFieldsSql() + SQLUtils.getWhereClause(date);
+        String accountSQL2 = SQLUtils.getSecondHalfAccountFieldsSQL() + SQLUtils.getWhereClause(date);
 
-        Map<String,String> params = new HashMap<String, String>();
-        params.put("q", accountSQL);
+        Map<String,String> params1 = new HashMap<String, String>();
+        params1.put("q", accountSQL1);
 
-        String accountResultJson = HttpUtils.sendPost(accountRequestSql,params);
+        Map<String,String> params2 = new HashMap<String, String>();
+        params2.put("q", accountSQL2);
 
-        System.out.println("result is: "+ accountResultJson);
+        String accountResultJson1 = HttpUtils.sendPost(accountRequestSql,params1);
+        String accountResultJson2 = HttpUtils.sendPost(accountRequestSql,params2);
+
+        System.out.println("result1 is: "+ accountResultJson1);
+        System.out.println("result2 is: "+ accountResultJson2);
 
         //! 获取一级结果字段
-        VPXSYResult accountResult = JSON.parseObject(accountResultJson, VPXSYResult.class);
-        Integer totalSize =  accountResult.getTotalSize();
-        Integer count = accountResult.getCount();
-        String accountsStr = accountResult.getRecords();
+        VPXSYResult accountResult1 = JSON.parseObject(accountResultJson1, VPXSYResult.class);
+        Integer totalSize1 =  accountResult1.getTotalSize();
+        Integer count1 = accountResult1.getCount();
+        String accountsStr1 = accountResult1.getRecords();
+
+        //! 获取一级结果字段
+        VPXSYResult accountResult2 = JSON.parseObject(accountResultJson2, VPXSYResult.class);
+        Integer totalSize2 =  accountResult2.getTotalSize();
+        Integer count2 = accountResult2.getCount();
+        String accountsStr2 = accountResult2.getRecords();
 
         //！ 获取records数组
-        List<VPXSYAccount> accountList = JSONArray.parseArray(accountsStr,VPXSYAccount.class);
-//        for (VPXSYAccount vpxsyAccount : accountList) {
-//            System.out.println(vpxsyAccount.getAccountName());
-//        }
+        List<VPXSYAccount> accountList1 = JSONArray.parseArray(accountsStr1,VPXSYAccount.class);
+        List<VPXSYAccount> accountList2 = JSONArray.parseArray(accountsStr2,VPXSYAccount.class);
+        accountList1.addAll(accountList2);
+
         ReturnResult<List<VPXSYAccount>> returnResult = new ReturnResult<List<VPXSYAccount>>(ResultEnum.SUCCESS);
         returnResult.setMsg("SUCCESS");
-        returnResult.setData(accountList);
+        returnResult.setData(accountList1);
 
         return returnResult;
     }
@@ -111,16 +115,9 @@ public class CRMApiController implements CRMApi {
         Long b_yes_timestamp = dateBeforeYesterday.getTime();
 
         //! 拼装account全量sql
-        String opportunitySQL1 = SQLUtils.getOpportunityFirstHalfFieldsSql() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
-        String opportunitySQL2 = SQLUtils.getOpportunitySecondHalfFieldsSql() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
-
-        String opportunitySQL3 = SQLUtils.getOpportunityThirdHalfFieldsSql() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
+        String opportunitySQL1 = SQLUtils.getOpportunityFirstHalfFieldsSql() + SQLUtils.getWhereClause(date);
+        String opportunitySQL2 = SQLUtils.getOpportunitySecondHalfFieldsSql() + SQLUtils.getWhereClause(date);
+        String opportunitySQL3 = SQLUtils.getOpportunityThirdHalfFieldsSql() + SQLUtils.getWhereClause(date);
 
         Map<String,String> params1 = new HashMap<String, String>();
         params1.put("q", opportunitySQL1);
@@ -176,21 +173,6 @@ public class CRMApiController implements CRMApi {
 
         }
 
-//        List recordList0 = new ArrayList<>();
-//        Map<String,String> map = new HashMap<>();
-//        map.put("id","1");
-//        map.put("look","2");
-//        recordList0.add(map);
-//
-//        List recordList00 = new ArrayList<>();
-//        Map<String,String> map0 = new HashMap<>();
-//        map.put("id","1");
-//        map.put("hihi","5");
-//        recordList00.add(map);
-//
-//        recordList0.addAll(recordList00);
-
-
         ReturnResult<List<VPXSYOpportunity>> returnResult = new ReturnResult<List<VPXSYOpportunity>>(ResultEnum.SUCCESS);
         returnResult.setMsg("totalSize:"+totalCount+", recordList1 size :"+recordList1.size());
         returnResult.setData(recordList1);
@@ -206,21 +188,11 @@ public class CRMApiController implements CRMApi {
         String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
         //！ 执行post请求
         String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
-        //! 处理时间
-        Date yesterday = DateUtils.strToDate(date,"");
-        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
-
-        Long yes_timestamp = yesterday.getTime();
-        Long b_yes_timestamp = dateBeforeYesterday.getTime();
 
         //! 拼装account全量sql
-        String orderSQL1 = SQLUtils.getOrderFirstHalfFieldSQL() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
+        String orderSQL1 = SQLUtils.getOrderFirstHalfFieldSQL() + SQLUtils.getWhereClause(date);
 
-        String orderSQL2 = SQLUtils.getOrderSecondHalfFieldsSQL() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
+        String orderSQL2 = SQLUtils.getOrderSecondHalfFieldsSQL() + SQLUtils.getWhereClause(date);
 
         Map<String,String> params1 = new HashMap<String, String>();
         params1.put("q", orderSQL1);
@@ -324,17 +296,9 @@ public class CRMApiController implements CRMApi {
         String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
         //！ 执行post请求
         String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
-        //! 处理时间
-        Date yesterday = DateUtils.strToDate(date,"");
-        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
-
-        Long yes_timestamp = yesterday.getTime();
-        Long b_yes_timestamp = dateBeforeYesterday.getTime();
 
         //! 拼装account全量sql
-        String contractSQL = SQLUtils.getContractListSQL() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
+        String contractSQL = SQLUtils.getContractListSQL() + SQLUtils.getWhereClause(date);
 
         Map<String,String> params = new HashMap<String, String>();
         params.put("q", contractSQL);
@@ -369,17 +333,9 @@ public class CRMApiController implements CRMApi {
         String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
         //！ 执行post请求
         String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
-        //! 处理时间
-        Date yesterday = DateUtils.strToDate(date,"");
-        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
-
-        Long yes_timestamp = yesterday.getTime();
-        Long b_yes_timestamp = dateBeforeYesterday.getTime();
 
         //! 拼装leads全量sql
-        String leadsSQL = SQLUtils.getLeadsSQL() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
+        String leadsSQL = SQLUtils.getLeadsSQL() + SQLUtils.getWhereClause(date);
 
         Map<String,String> params = new HashMap<String, String>();
         params.put("q", leadsSQL);
@@ -414,18 +370,9 @@ public class CRMApiController implements CRMApi {
         String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
         //！ 执行post请求
         String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
-        //! 处理时间
-        Date yesterday = DateUtils.strToDate(date,"");
-        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
-
-        Long yes_timestamp = yesterday.getTime();
-        Long b_yes_timestamp = dateBeforeYesterday.getTime();
 
         //! 拼装payment全量sql
-        String paymentSQL = SQLUtils.getPaymentSQL() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
-
+        String paymentSQL = SQLUtils.getPaymentSQL() + SQLUtils.getWhereClause(date);
         Map<String,String> params = new HashMap<String, String>();
         params.put("q", paymentSQL);
 
@@ -500,17 +447,10 @@ public class CRMApiController implements CRMApi {
         String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
         //！ 执行post请求
         String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
-        //! 处理时间
-        Date yesterday = DateUtils.strToDate(date,"");
-        Date dateBeforeYesterday = DateUtils.addDays(yesterday,-1);
 
-        Long yes_timestamp = yesterday.getTime();
-        Long b_yes_timestamp = dateBeforeYesterday.getTime();
 
         //! 拼装user全量sql
-        String userSQL = SQLUtils.getUserSQL() +
-                " where createdAt >= " + b_yes_timestamp + " and createdAt <" + yes_timestamp +
-                " limit 1000";
+        String userSQL = SQLUtils.getUserSQL() + SQLUtils.getWhereClause(date);
 
         Map<String,String> params = new HashMap<String, String>();
         params.put("q", userSQL);
@@ -541,7 +481,7 @@ public class CRMApiController implements CRMApi {
     @Override
     public ReturnResult<List<VPXSYResponsibility>> getCrmResponsibilityList() {
         ReturnResult<List<VPXSYResponsibility>> returnResult = new ReturnResult<List<VPXSYResponsibility>>(ResultEnum.SUCCESS);
-        
+
         //！ 刷新token
         ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
         String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
@@ -595,6 +535,179 @@ public class CRMApiController implements CRMApi {
                     returnResult.setMsg("SUCCESS");
                 }
 
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+
+    @Override
+    public ReturnResult<VPXSYDept> getCrmDepartTree(@PathVariable  String id) {
+
+        ReturnResult<VPXSYDept> returnResult = new ReturnResult<VPXSYDept>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_DEPT_INFO+tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String deptResultJson = null;
+        try {
+            deptResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (deptResultJson != null) {
+                System.out.println(deptResultJson);
+                VPXSYDept deptResult = JSON.parseObject(deptResultJson,VPXSYDept.class);
+                if (deptResult!=null ) {
+
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(deptResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYContact>> getCrmContact(@PathVariable String date) {
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_QUERY_URL+tokenStr;
+
+        String contactSQL = SQLUtils.getCrmContactSQL() + SQLUtils.getWhereClause(date);
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("q", contactSQL);
+
+        String contactResultJson = null;
+        ReturnResult<List<VPXSYContact>> returnResult = new ReturnResult<List<VPXSYContact>>(ResultEnum.SUCCESS);
+
+        try{
+            contactResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            System.out.println("result1 is: "+ contactResultJson);
+            //! 获取一级结果字段
+            VPXSYResult userResult = JSON.parseObject(contactResultJson, VPXSYResult.class);
+            Integer totalSize =  userResult.getTotalSize();
+            Integer count = userResult.getCount();
+            String contactResultResultRecordsStr = userResult.getRecords();
+
+            //！ 获取records数组
+            List<VPXSYContact> contactList = JSONArray.parseArray(contactResultResultRecordsStr,VPXSYContact.class);
+            returnResult.setMsg("SUCCESS");
+            returnResult.setData(contactList);
+        }catch (Exception e){
+            returnResult.setMsg("Faided!"+ e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<VPXSYContact> getCrmContactById(@PathVariable  String id) {
+
+
+        ReturnResult<VPXSYContact> returnResult = new ReturnResult<VPXSYContact>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_CONTACT_INFO + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String contactResultJson = null;
+        try {
+            contactResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (contactResultJson != null) {
+                System.out.println(contactResultJson);
+                VPXSYContact contactResult = JSON.parseObject(contactResultJson,VPXSYContact.class);
+                if (contactResult!=null ) {
+
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(contactResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<VPXSYAccount> getCrmCustomerById(@PathVariable  String id) {
+        ReturnResult<VPXSYAccount> returnResult = new ReturnResult<VPXSYAccount>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_CUSTOMER_INFO + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String accountResultJson = null;
+        try {
+            accountResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (accountResultJson != null) {
+                System.out.println(accountResultJson);
+                VPXSYAccount contactResult = JSON.parseObject(accountResultJson, VPXSYAccount.class);
+                if (contactResult!=null ) {
+
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(contactResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+
+    @Override
+    public ReturnResult<VPXSYOpportunity> getCrmOpportunityById(@PathVariable  String id) {
+        ReturnResult<VPXSYOpportunity> returnResult = new ReturnResult<VPXSYOpportunity>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_OPPORTUNITY_INFO + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String oppResultJson = null;
+        try {
+            oppResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (oppResultJson != null) {
+                System.out.println(oppResultJson);
+                VPXSYOpportunity opportunityResult = JSON.parseObject(oppResultJson, VPXSYOpportunity.class);
+                if (opportunityResult!=null ) {
+
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(opportunityResult);
+                    returnResult.setMsg("SUCCESS");
+                }
             }
 
         }catch (Exception e) {

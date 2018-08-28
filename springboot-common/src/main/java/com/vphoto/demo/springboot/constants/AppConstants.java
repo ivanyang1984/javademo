@@ -94,4 +94,11 @@ public class AppConstants {
 
     public static final String CRM_DEPT_TREE = "https://api.xiaoshouyi.com/data/v1/objects/depart/tree";
 
+    public static final String CRM_DEPT_INFO = "https://api.xiaoshouyi.com/data/v1/objects/depart/info";
+
+    public static final String CRM_CONTACT_INFO = "https://api.xiaoshouyi.com/data/v1/objects/contact/info";
+
+    public static final String CRM_CUSTOMER_INFO = "https://api.xiaoshouyi.com/data/v1/objects/account/info";
+
+    public static final String CRM_OPPORTUNITY_INFO = "https://api.xiaoshouyi.com/data/v1/objects/opportunity/info";
 }
