@@ -117,4 +117,8 @@ public class AppConstants {
     public static final String ES_GET_ORDER_PV_UV = "http://admin.i.vphotos.cn/vphotosAdmin/admin/statistics/getOrderListAndEs";
 
     public static final String ES_GET_VISIT_SOURCE = "http://admin.i.vphotos.cn/vphotosAdmin/admin/statistics/getVisitSource";
+
+    public static final String CONVERTLAB_ACCESSTOKEN = "https://api.convertlab.com/security/accesstoken";
+
+    public static final String CONVERTLAB_GROUP_LIST = "https://api.convertlab.com/v1/lists";
 }

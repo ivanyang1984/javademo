@@ -8,10 +8,13 @@
 
 package com.vphoto.demo.springboot.model.convertlab;
 
+import lombok.Data;
+
 /**
  * @author hongfei.yang@v.photos
  * @version creat time：2018/7/4 下午1:47
  */
+@Data
 public class GroupModel {
 
     private String id;
