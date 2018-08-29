@@ -27,7 +27,7 @@
         <env>dev</env>
 
         <!-- 定义版本号 -->
-        <pro.name>springboot-web</pro.name>
+        <pro.name>vphotobi</pro.name>
         <pro.version>1.0-SNAPSHOT</pro.version>
 
         <!-- 引用版本号 -->
@@ -247,23 +247,23 @@
                 </executions>
             </plugin>
 
-            <!--<plugin>-->
-                <!--<groupId>com.spotify</groupId>-->
-                <!--<artifactId>docker-maven-plugin</artifactId>-->
-                <!--<version>0.4.14</version>-->
-                <!--<configuration>-->
-                    <!--<imageName>${docker.image.prefix}/${project.artifactId}</imageName>-->
-                    <!--<dockerDirectory>src/main/docker</dockerDirectory>-->
-                    <!--<dockerHost>https://dockerrepos.vphotos.cn</dockerHost>-->
-                    <!--<resources>-->
-                        <!--<resource>-->
-                            <!--<targetPath>/</targetPath>-->
-                            <!--<directory>${project.build.directory}</directory>-->
-                            <!--<include>${project.build.finalName}.jar</include>-->
-                        <!--</resource>-->
-                    <!--</resources>-->
-                <!--</configuration>-->
-            <!--</plugin>-->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.14</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <dockerHost>https://dockerrepos.vphotos.cn</dockerHost>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
