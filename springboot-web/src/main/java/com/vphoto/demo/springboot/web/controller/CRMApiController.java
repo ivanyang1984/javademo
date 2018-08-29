@@ -717,4 +717,202 @@ public class CRMApiController implements CRMApi {
 
         return returnResult;
     }
+
+    @Override
+    public ReturnResult<VPXSYOrder> getCrmOrderById(@PathVariable String id) {
+        ReturnResult<VPXSYOrder> returnResult = new ReturnResult<VPXSYOrder>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_ORDER_INFO + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String orderResultJson = null;
+        try {
+            orderResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (orderResultJson != null) {
+                System.out.println(orderResultJson);
+                VPXSYOrder orderResult = JSON.parseObject(orderResultJson, VPXSYOrder.class);
+                if (orderResult!=null ) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(orderResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<VPXSYContract> getCrmContractById(@PathVariable  String id) {
+        ReturnResult<VPXSYContract> returnResult = new ReturnResult<VPXSYContract>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_CONTRACT_INFO + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String contractResultJson = null;
+        try {
+            contractResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (contractResultJson != null) {
+                System.out.println(contractResultJson);
+                VPXSYContract orderResult = JSON.parseObject(contractResultJson, VPXSYContract.class);
+                if (orderResult!=null ) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(orderResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+
+    @Override
+    public ReturnResult<VPXSYContractPayments> getCrmContractPaymentsInfoById(@PathVariable  String id) {
+        ReturnResult<VPXSYContractPayments> returnResult = new ReturnResult<VPXSYContractPayments>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_CONTRACT_PAYMENTS + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String contractPaymentsResultJson = null;
+        try {
+            contractPaymentsResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (contractPaymentsResultJson != null) {
+                System.out.println(contractPaymentsResultJson);
+                VPXSYContractPayments orderResult = JSON.parseObject(contractPaymentsResultJson, VPXSYContractPayments.class);
+                if (orderResult!=null ) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(orderResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<VPXSYProduct> getCrmProductInfoById(@PathVariable  String id) {
+        ReturnResult<VPXSYProduct> returnResult = new ReturnResult<VPXSYProduct>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_PRODUCT + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("id",id);
+        String productResultJson = null;
+        try {
+            productResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (productResultJson != null) {
+                System.out.println(productResultJson);
+                VPXSYProduct orderResult = JSON.parseObject(productResultJson, VPXSYProduct.class);
+                if (orderResult!=null ) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(orderResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYProduct>> getCrmProductList() {
+        ReturnResult<List<VPXSYProduct>> returnResult = new ReturnResult<List<VPXSYProduct>>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_PRODUCT_LIST + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        String productResultJson = null;
+        try {
+            productResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (productResultJson != null) {
+                System.out.println(productResultJson);
+                VPXSYProductResult productResult = JSON.parseObject(productResultJson, VPXSYProductResult.class);
+                if (productResult.getProducts() != null) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(productResult.getProducts());
+                    returnResult.setMsg("SUCCESS");
+                }
+
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<VPXSYUserResponsibility>> getCrmUserResponsibilityById(@PathVariable  String id) {
+        ReturnResult<List<VPXSYUserResponsibility>> returnResult = new ReturnResult<List<VPXSYUserResponsibility>>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        ReturnResult<VPXSYTokenModel> token = this.crmAccessToken();
+        String tokenStr = "?access_token=Bearer "+token.getData().getAccess_token();
+        //！ 执行post请求
+        String crmObjRequestSql = CRM_USER_RESPON_LIST + tokenStr;
+
+        Map<String,String> params = new HashMap<String, String>();
+        params.put("userId",id);
+        String userResResultJson = null;
+        try {
+            userResResultJson = HttpUtils.sendPost(crmObjRequestSql,params);
+            if (userResResultJson != null) {
+                System.out.println(userResResultJson);
+                VPXSYResult result = JSON.parseObject(userResResultJson, VPXSYResult.class);
+                if (result.getRecords()!= null) {
+                    List<VPXSYUserResponsibility> userRespRecords = JSONArray.parseArray(result.getRecords(), VPXSYUserResponsibility.class);
+                    if (userRespRecords != null) {
+                        returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                        returnResult.setData(userRespRecords);
+                        returnResult.setMsg("SUCCESS");
+                    }
+                }
+
+
+            }
+
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.SUCCESS.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
 }

@@ -101,4 +101,16 @@ public class AppConstants {
     public static final String CRM_CUSTOMER_INFO = "https://api.xiaoshouyi.com/data/v1/objects/account/info";
 
     public static final String CRM_OPPORTUNITY_INFO = "https://api.xiaoshouyi.com/data/v1/objects/opportunity/info";
+
+    public static final String CRM_ORDER_INFO = "https://api.xiaoshouyi.com/data/v1/objects/order/info";
+
+    public static final String CRM_CONTRACT_INFO = "https://api.xiaoshouyi.com/data/v1/objects/contract/info";
+
+    public static final String CRM_CONTRACT_PAYMENTS = "https://api.xiaoshouyi.com/data/v1/objects/contract/payment/list";
+
+    public static final String CRM_PRODUCT = "https://api.xiaoshouyi.com/data/v1/objects/product/info";
+
+    public static final String CRM_PRODUCT_LIST = "https://api.xiaoshouyi.com/data/v1/objects/product/list";
+
+    public static final String CRM_USER_RESPON_LIST = "https://api.xiaoshouyi.com/data/v1/objects/userresponsibilities/list";
 }

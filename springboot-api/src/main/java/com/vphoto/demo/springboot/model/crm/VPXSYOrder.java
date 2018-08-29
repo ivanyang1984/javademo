@@ -2,6 +2,9 @@ package com.vphoto.demo.springboot.model.crm;
 
 import lombok.Data;
 
+import java.util.List;
+import java.util.Map;
+
 @Data
 public class VPXSYOrder {
 
@@ -214,4 +217,16 @@ public class VPXSYOrder {
     private String dbcSelect15;
 
     private String dbcSelect16;
+
+    private String dbcSelect17;
+
+    private VPXSYAttributes attributes;
+
+    private List<VPXSYMembers> members;
+
+    private List<String> owners;
+
+    private List<VPXSYOrderProduct> products;
+
+
 }

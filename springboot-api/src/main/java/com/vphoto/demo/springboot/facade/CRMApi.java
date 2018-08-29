@@ -193,4 +193,77 @@ public interface CRMApi {
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ReturnResult<VPXSYOpportunity> getCrmOpportunityById(@PathVariable("id") String id);
+
+
+    @ApiOperation(value = "获取CRM订单明细byId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="通过订单id 获取订单")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "订单id", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/orderById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYOrder> getCrmOrderById(@PathVariable("id") String id);
+
+
+    @ApiOperation(value = "获取CRM合同byId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM合同byId数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "合同id", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/contractById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYContract> getCrmContractById(@PathVariable("id") String id);
+
+    @ApiOperation(value = "获取CRM合同回款列表byId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM合同回款列表byId数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "合同id", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/contractPaymentsInfoById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYContractPayments> getCrmContractPaymentsInfoById(@PathVariable("id") String id);
+
+
+    @ApiOperation(value = "获取CRM产品byId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM产品byId数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "产品id", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/productInfoById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<VPXSYProduct> getCrmProductInfoById(@PathVariable("id") String id);
+
+    @ApiOperation(value = "获取CRM产品列表数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM产品列表数据")
+    @RequestMapping(value = {"/crm/productList"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYProduct>> getCrmProductList();
+
+
+    @ApiOperation(value = "获取CRM职能关联byUserId数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="获取CRM职能关联byUserId数据")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "userId", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/crm/userResponsibilityById/{id}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<VPXSYUserResponsibility>> getCrmUserResponsibilityById(@PathVariable("id") String id);
 }

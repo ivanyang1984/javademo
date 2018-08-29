@@ -2,6 +2,8 @@ package com.vphoto.demo.springboot.model.crm;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class VPXSYContract {
 
@@ -94,5 +96,15 @@ public class VPXSYContract {
     private String dbcSelect4;
 
     private String dbcSelect5;
+
+    private VPXSYAttributes attributes;
+
+    private List<VPXSYMembers> members;
+
+    private List<VPXSYMembers> owners;
+
+    private List<VPXSYOrderProduct> products;
+
+    private List<String> paymentStages;
 
 }

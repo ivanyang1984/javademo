@@ -332,12 +332,11 @@ public class VPXSYOpportunity {
 
     private String dbcVarchar45;
 
+    private List<VPXSYMembers> members;
 
-    private List<Map<String,String>> members;
+    private List<VPXSYMembers> owners;
 
-    private List<Map<String,String>> owners;
+    private VPXSYAttributes attributes;
 
-    private Map<String,String> attributes;
-
-    private List<String> products;
+    private List<VPXSYOrderProduct> products;
 }

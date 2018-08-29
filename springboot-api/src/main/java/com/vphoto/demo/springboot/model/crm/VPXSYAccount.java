@@ -3,7 +3,6 @@ package com.vphoto.demo.springboot.model.crm;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class VPXSYAccount {
@@ -164,11 +163,11 @@ public class VPXSYAccount {
 
     private String dbcDate1;
 
-    private Map<String,String> attributes;
+    private VPXSYAttributes attributes;
 
-    private List<Map<String,String>> members;
+    private List<VPXSYMembers> members;
 
-    private List<Map<String,String>> owners;
+    private List<VPXSYMembers> owners;
 
 
 }
