@@ -69,7 +69,8 @@ start(){
         exit 1
     else
         cd $APP_PATH
-        nohup java $JAVA_OPTS -cp $CLASS_PATH -jar $DEFAULT_JAR $APP_NAME >$LOG_PATH/stdout.log 2>&1 &
+        #nohup java $JAVA_OPTS -cp $CLASS_PATH -jar $DEFAULT_JAR $APP_NAME >$LOG_PATH/stdout.log 2>&1 &
+        java $JAVA_OPTS -cp $CLASS_PATH -jar $DEFAULT_JAR $APP_NAME >$LOG_PATH/stdout.log 2>&1
         sleep 3s
         runningPID=`pgrep -f "$APP_NAME"`
         echo $runningPID > $PID_PATH/pid
