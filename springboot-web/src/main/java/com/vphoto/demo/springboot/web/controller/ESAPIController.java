@@ -8,14 +8,13 @@ import com.vphoto.demo.springboot.model.crm.VPXSYResult;
 import com.vphoto.demo.springboot.model.crm.VPXSYTokenModel;
 import com.vphoto.demo.springboot.model.crm.VPXSYUserResponsibility;
 import com.vphoto.demo.springboot.model.enums.ResultEnum;
-import com.vphoto.demo.springboot.model.es.ESResult;
-import com.vphoto.demo.springboot.model.es.ESVPVisitResult;
-import com.vphoto.demo.springboot.model.es.VPESUserOrderDetail;
+import com.vphoto.demo.springboot.model.es.*;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import com.vphoto.demo.springboot.utils.HttpUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ import java.util.Map;
 import static com.vphoto.demo.springboot.constants.AppConstants.CRM_USER_RESPON_LIST;
 import static com.vphoto.demo.springboot.constants.AppConstants.ES_GET_ORDER_PV_UV;
 import static com.vphoto.demo.springboot.constants.AppConstants.ES_GET_VISIT_SOURCE;
+import static com.vphoto.demo.springboot.utils.ESResultUtils.convertListToData;
 
 @RestController
 public class ESAPIController implements ESDataApi {
@@ -60,8 +60,8 @@ public class ESAPIController implements ESDataApi {
     }
 
     @Override
-    public ReturnResult<ESVPVisitResult> getVisitSource(@PathVariable  String orderId) {
-        ReturnResult<ESVPVisitResult> returnResult = new ReturnResult<ESVPVisitResult>(ResultEnum.SUCCESS);
+    public ReturnResult<VPESVisitData> getVisitSource(@PathVariable  String orderId) {
+        ReturnResult<VPESVisitData> returnResult = new ReturnResult<VPESVisitData>(ResultEnum.SUCCESS);
         String tokenStr = "?token=69f2354a18fbdfdfe8d0a3ef486e123c";//!测试永久token
         //！ 执行post请求
         String esRequestSql = ES_GET_VISIT_SOURCE + tokenStr;
@@ -76,7 +76,15 @@ public class ESAPIController implements ESDataApi {
                 System.out.println(esResultJson);
                 ESVPVisitResult result = JSON.parseObject(esResultJson, ESVPVisitResult.class);
                 returnResult.setCode(ResultEnum.SUCCESS.getCode());
-                returnResult.setData(result);
+
+                VPESVisitData resultData = new VPESVisitData();
+                resultData.setVistAvg(convertListToData(result.getData().getVistAvg()));
+                resultData.setVistPv(convertListToData(result.getData().getVistPv()));
+                resultData.setVistAvgScale(convertListToData(result.getData().getVistAvgScale()));
+                resultData.setVistPvScale(convertListToData(result.getData().getVistPvScale()));
+                resultData.setVistUv(convertListToData(result.getData().getVistUv()));
+                resultData.setVistUvScale(convertListToData(result.getData().getVistUvScale()));
+                returnResult.setData(resultData);
                 returnResult.setMsg("SUCCESS");
             }
 
