@@ -113,4 +113,8 @@ public class AppConstants {
     public static final String CRM_PRODUCT_LIST = "https://api.xiaoshouyi.com/data/v1/objects/product/list";
 
     public static final String CRM_USER_RESPON_LIST = "https://api.xiaoshouyi.com/data/v1/objects/userresponsibilities/list";
+
+    public static final String ES_GET_ORDER_PV_UV = "http://admin.i.vphotos.cn/vphotosAdmin/admin/statistics/getOrderListAndEs";
+
+    public static final String ES_GET_VISIT_SOURCE = "http://admin.i.vphotos.cn/vphotosAdmin/admin/statistics/getVisitSource";
 }
