@@ -23,7 +23,7 @@ DEFAULT_JAVA_OPTS=" -server -Xmx${XMX_V}m -Xms${XMS_V}m -Xmn${XMN_V}m -XX:PermSi
 APP_PATH=${APP_PATH:-`dirname "$BASE_PATH"`}
 CLASS_PATH=${CLASS_PATH:-$APP_PATH/config:$APP_PATH/lib/*}
 JAVA_OPTS=${JAVA_OPTS:-$DEFAULT_JAVA_OPTS}
-DEFAULT_JAR=$(find $APP_PATH/lib/ -name *.jar)
+DEFAULT_JAR=$(find $APP_PATH/lib -name *.jar)
 LOG_PATH="${LOGGING_PATH}"
 if [ ! -d "$LOG_PATH" ]; then 
 	mkdir -p $LOG_PATH

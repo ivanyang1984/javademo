@@ -14,7 +14,6 @@ package com.vphoto.demo.springboot.web.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.sensorsdata.analytics.javasdk.SensorsAnalytics;
 import com.sensorsdata.analytics.javasdk.exceptions.InvalidArgumentException;
 import com.vphoto.demo.springboot.constants.AppConstants;
 import com.vphoto.demo.springboot.exception.Validation;
@@ -46,6 +45,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.sensorsdata.analytics.javasdk.*;
 
 import static com.vphoto.demo.springboot.constants.AppConstants.CONVERTLAB_APP_ID;
 import static com.vphoto.demo.springboot.constants.AppConstants.CONVERTLAB_APP_SECRET;

@@ -56,4 +56,65 @@ public class AppConstants {
      */
     public static final String CONVERTLAB_APP_ID = "cl02da164630fdaaf";
 
+    /**
+     * crm grant type
+     */
+    public static final String CRM_GRANT_TYPE = "password";
+
+    /**
+     * crm client id
+     */
+    public static final String CRM_CLIENT_ID = "0b42ebdbbb509489a15aaca051c0f8d3";
+
+    /**
+     * crm client secret
+     */
+    public static final String CRM_CLIENT_SECRET = "9d0f24fff546b374aaa64ded5a641b56";
+
+    /**
+     * crm redirect uri
+     */
+    public static final String CRM_REDIRECT_URI = "https://api.xiaoshouyi.com";
+
+    /**
+     * crm username
+     */
+    public static final String CRM_USERNAME = "wencheng.gao@v.photos";
+
+    /**
+     * crm password
+     */
+    public static final String CRM_PASSWORD = "VPhotos123bbJUqKQO";
+
+    public static final String CRM_QUERY_URL = "https://api.xiaoshouyi.com/data/v1/query";
+
+    public static final String CRM_ORDER_PAYMENTS = "https://api.xiaoshouyi.com/data/v1/objects/order/payment/list";
+
+    public static final String CRM_RESPONSIBILITY_LIST = "https://api.xiaoshouyi.com/data/v1/objects/responsibility/list";
+
+    public static final String CRM_DEPT_TREE = "https://api.xiaoshouyi.com/data/v1/objects/depart/tree";
+
+    public static final String CRM_DEPT_INFO = "https://api.xiaoshouyi.com/data/v1/objects/depart/info";
+
+    public static final String CRM_CONTACT_INFO = "https://api.xiaoshouyi.com/data/v1/objects/contact/info";
+
+    public static final String CRM_CUSTOMER_INFO = "https://api.xiaoshouyi.com/data/v1/objects/account/info";
+
+    public static final String CRM_OPPORTUNITY_INFO = "https://api.xiaoshouyi.com/data/v1/objects/opportunity/info";
+
+    public static final String CRM_ORDER_INFO = "https://api.xiaoshouyi.com/data/v1/objects/order/info";
+
+    public static final String CRM_CONTRACT_INFO = "https://api.xiaoshouyi.com/data/v1/objects/contract/info";
+
+    public static final String CRM_CONTRACT_PAYMENTS = "https://api.xiaoshouyi.com/data/v1/objects/contract/payment/list";
+
+    public static final String CRM_PRODUCT = "https://api.xiaoshouyi.com/data/v1/objects/product/info";
+
+    public static final String CRM_PRODUCT_LIST = "https://api.xiaoshouyi.com/data/v1/objects/product/list";
+
+    public static final String CRM_USER_RESPON_LIST = "https://api.xiaoshouyi.com/data/v1/objects/userresponsibilities/list";
+
+    public static final String ES_GET_ORDER_PV_UV = "http://admin.i.vphotos.cn/vphotosAdmin/admin/statistics/getOrderListAndEs";
+
+    public static final String ES_GET_VISIT_SOURCE = "http://admin.i.vphotos.cn/vphotosAdmin/admin/statistics/getVisitSource";
 }
