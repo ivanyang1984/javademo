@@ -30,3 +30,10 @@ spring:
         max-idle: 4
         max-wait: -1ms
         min-idle: 2
+
+convertlab:
+  grantType: client_credentials
+  appid: cl02da164630fdaaf
+  secret: 3ea3fa9cea8e2e9d3d823848202f3ec52d008507
+  tenantId: 1587
+
