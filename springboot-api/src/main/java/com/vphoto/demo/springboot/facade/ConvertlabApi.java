@@ -1,6 +1,7 @@
 package com.vphoto.demo.springboot.facade;
 
-import com.vphoto.demo.springboot.model.convertlab.GroupModel;
+import com.sun.tools.javac.util.Convert;
+import com.vphoto.demo.springboot.model.convertlab.*;
 import com.vphoto.demo.springboot.model.crm.VPXSYUserResponsibility;
 import com.vphoto.demo.springboot.model.result.ReturnResult;
 import io.swagger.annotations.ApiImplicitParam;
@@ -45,4 +46,66 @@ public interface ConvertlabApi {
     ReturnResult<List<GroupModel>> getConvertlabGroupList();
 
 
+    @ApiOperation(value = "获取Convertlab 群组中的成员",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/listMembers")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "listId", value = "listId", required = true, dataType = "String", paramType = "path"),
+            @ApiImplicitParam(name = "rows", value = "rows", dataType = "Long", paramType = "path")
+    })
+    @RequestMapping(value = {"/convertlab/groupmembers/{listId}/{rows}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<GroupMember>> getConvertlabGroupmembers(@PathVariable("listId") String listId, @PathVariable(value = "rows",required = false) String rows);
+
+
+    @ApiOperation(value = "获取Convertlab 单个客户数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/customers/{id}?access_token={access_token}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "customerId", value = "customerId", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/convertlab/singleCustomer/{customerId}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<Customer> getConvertlabSingleCustomer(@PathVariable("customerId") String customerId);
+
+    @ApiOperation(value = "获取Convertlab 多个客户数据",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/customers")
+    @RequestMapping(value = {"/convertlab/customersByIds"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<Customer>> getConvertlabCustomerByIds(@PathVariable  String idList, @PathVariable String rows);
+
+    @ApiOperation(value = "获取Convertlab 获取客户身份",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/customeridentities")
+    @RequestMapping(value = {"/convertlab/customersIdentityByIds"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<CustomerIdentity>> getConvertlabCustomerIdentitiesByIds(@PathVariable String idList);
+
+    @ApiOperation(value = "获取Convertlab 获取推广人信息",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/referralDetailsForFan")
+    @RequestMapping(value = {"/convertlab/referralDetailsForFan"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<ReferralModel>> getConvertlabReferralDetailsForFan(@PathVariable String openId, @PathVariable String referPlan, @PathVariable(required = false) String eventName);
+
+
+    @ApiOperation(value = "获取Convertlab 获取推广成绩",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/referralDetails")
+    @RequestMapping(value = {"/convertlab/referralDetails"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<ReferralModel>> getConvertlabReferralDetails(@PathVariable String referPlan, @PathVariable(required = false) String eventName);
 }

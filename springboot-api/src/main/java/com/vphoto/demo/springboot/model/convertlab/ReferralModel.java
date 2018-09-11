@@ -8,11 +8,14 @@
 
 package com.vphoto.demo.springboot.model.convertlab;
 
+import lombok.Data;
+
 /**
  * @author hongfei.yang@v.photos
  * @version creat time：2018/7/4 上午11:25
  * 根据被推广人openId 来查询对应的推广计划下对应的推广人信息
  */
+@Data
 public class ReferralModel {
 
     /**

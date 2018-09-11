@@ -121,4 +121,16 @@ public class AppConstants {
     public static final String CONVERTLAB_ACCESSTOKEN = "https://api.convertlab.com/security/accesstoken";
 
     public static final String CONVERTLAB_GROUP_LIST = "https://api.convertlab.com/v1/lists";
+
+    public static final String CONVERTLAB_GROUP_MEMBERS = "https://api.convertlab.com/v1/listMembers";
+
+    public static final String CONVERTLAB_SINGLE_CUSTOMER = "https://api.convertlab.com/v1/customers/";
+
+    public static final String CONVERTLAB_CUSTOMERS = "https://api.convertlab.com/v1/customers";
+
+    public static final String CONVERTLAB_CUSTOMER_IDENTITY = "https://api.convertlab.com/v1/customeridentities";
+
+    public static final String CONVERTLAB_REFERRAL_DETAILS_FOR_FAN = "https://api.convertlab.com/v1/referralDetailsForFan";
+
+    public static final String CONVERTLAB_REFERRAL_DETAILS = "https://api.convertlab.com/v1/referralDetails";
 }

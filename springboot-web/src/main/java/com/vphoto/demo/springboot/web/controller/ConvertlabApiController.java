@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.vphoto.demo.springboot.facade.ConvertlabApi;
-import com.vphoto.demo.springboot.model.convertlab.ConvertlabResult;
-import com.vphoto.demo.springboot.model.convertlab.GroupModel;
+import com.vphoto.demo.springboot.model.convertlab.*;
 import com.vphoto.demo.springboot.model.crm.VPXSYResult;
 import com.vphoto.demo.springboot.model.crm.VPXSYTokenModel;
 import com.vphoto.demo.springboot.model.crm.VPXSYUserResponsibility;
@@ -30,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URLEncoder;
@@ -37,9 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.vphoto.demo.springboot.constants.AppConstants.CONVERTLAB_ACCESSTOKEN;
-import static com.vphoto.demo.springboot.constants.AppConstants.CONVERTLAB_GROUP_LIST;
-import static com.vphoto.demo.springboot.constants.AppConstants.CRM_USER_RESPON_LIST;
+import static com.vphoto.demo.springboot.constants.AppConstants.*;
 
 
 @RestController
@@ -171,6 +169,237 @@ public class ConvertlabApiController implements ConvertlabApi {
             returnResult.setMsg("FAILED:"+e.getCause().toString());
         }
 
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<GroupMember>> getConvertlabGroupmembers(@PathVariable  String listId, @PathVariable(value="rows",required = false) String rows) {
+        ReturnResult<List<GroupMember>> returnResult = new ReturnResult<List<GroupMember>>(ResultEnum.SUCCESS);
+        //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_GROUP_MEMBERS+"?access_token="+ token;
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("listId", listId);
+        if (!"".equals(rows) && !"undefined".equals(rows) && Long.parseLong(rows) > 0) {
+            param.put("rows", rows);
+        }
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl, param);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                ConvertlabGroupMembersResult result = JSON.parseObject(resultJson, ConvertlabGroupMembersResult.class);
+
+                if (result.getItems() != null) {
+                    List<GroupMember> items = result.getItems();
+                    if (items != null) {
+                        returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                        returnResult.setData(items);
+                        returnResult.setMsg("SUCCESS");
+                    }
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<Customer> getConvertlabSingleCustomer(@PathVariable  String customerId) {
+
+        ReturnResult<Customer> returnResult = new ReturnResult<Customer>(ResultEnum.SUCCESS);
+        if ("".equals(customerId)) {
+            returnResult.setData(null);
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            returnResult.setMsg("customerId is empty!");
+            return returnResult;
+        }
+                //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_SINGLE_CUSTOMER + customerId +"?access_token="+ token;
+
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl,null);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                Customer result = JSON.parseObject(resultJson, Customer.class);
+
+                if (result != null) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(result);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+
+    @Override
+    public ReturnResult<List<Customer>> getConvertlabCustomerByIds(String idList, String rows) {
+        ReturnResult<List<Customer>> returnResult = new ReturnResult<List<Customer>>(ResultEnum.SUCCESS);
+        if ("".equals(idList)) {
+            returnResult.setData(null);
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            returnResult.setMsg("customerIds is empty!");
+            return returnResult;
+        }
+        //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_CUSTOMERS +"?access_token="+ token;
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("idList",idList);
+        if (null!=rows && !"".equals(rows)) {
+            param.put("rows",rows);
+        }
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl,param);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                ConvertlabCustomersResult result = JSON.parseObject(resultJson, ConvertlabCustomersResult.class);
+                if (result.getRows() != null) {
+                    List<Customer> customers = result.getRows();
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(customers);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<CustomerIdentity>> getConvertlabCustomerIdentitiesByIds(String idList) {
+        ReturnResult<List<CustomerIdentity>> returnResult = new ReturnResult<List<CustomerIdentity>>(ResultEnum.SUCCESS);
+        if ("".equals(idList)) {
+            returnResult.setData(null);
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            returnResult.setMsg("idList is empty!");
+            return returnResult;
+        }
+        //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_CUSTOMER_IDENTITY +"?access_token="+ token;
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("customerIds",idList);
+
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl,param);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                List<CustomerIdentity> result = JSONArray.parseArray(resultJson, CustomerIdentity.class);
+                if (result != null) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(result);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<List<ReferralModel>> getConvertlabReferralDetailsForFan(String openId, String referPlan, String eventName) {
+        ReturnResult<List<ReferralModel>> returnResult = new ReturnResult<List<ReferralModel>>(ResultEnum.SUCCESS);
+        if ("".equals(openId) || "".equals(referPlan)) {
+            returnResult.setData(null);
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            returnResult.setMsg("openId or referPlan is empty!");
+            return returnResult;
+        }
+        //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_REFERRAL_DETAILS_FOR_FAN +"?access_token="+ token;
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("openId", openId);
+        param.put("referPlan", referPlan);
+        if (null != eventName) {
+            param.put("eventName", eventName);
+        }else {
+            param.put("eventName", "wechat_scan");
+        }
+
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl,param);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                ReferResult referResult = JSONArray.parseObject(resultJson, ReferResult.class);
+                System.out.println(referResult);
+                if (referResult != null) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(referResult.getRows());
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return returnResult;
+    }
+
+
+    @Override
+    public ReturnResult<List<ReferralModel>> getConvertlabReferralDetails(String referPlan, String eventName) {
+        ReturnResult<List<ReferralModel>> returnResult = new ReturnResult<List<ReferralModel>>(ResultEnum.SUCCESS);
+        if ("".equals(referPlan)) {
+            returnResult.setData(null);
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            returnResult.setMsg("referPlan is empty!");
+            return returnResult;
+        }
+        //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_REFERRAL_DETAILS +"?access_token="+ token;
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("referPlan", referPlan);
+        if (null != eventName) {
+            param.put("eventName", eventName);
+        }
+
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl,param);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                ReferResult referResult = JSONArray.parseObject(resultJson, ReferResult.class);
+
+                if (referResult != null) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(referResult.getRows());
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
         return returnResult;
     }
 }
