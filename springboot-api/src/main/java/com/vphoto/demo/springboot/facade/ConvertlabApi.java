@@ -108,4 +108,13 @@ public interface ConvertlabApi {
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ReturnResult<List<ReferralModel>> getConvertlabReferralDetails(@PathVariable String referPlan, @PathVariable(required = false) String eventName);
+
+    @ApiOperation(value = "获取Convertlab 获取推广计划",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="hhttps://app.convertlab.com/referplan/new?accountId=1369&isOpen=1&page=1&rows=20&sidx=dateCreated&sord=desc")
+    @RequestMapping(value = {"/convertlab/allFissionReferPlan"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<FissionReferPlan>> getAllFissionReferPlan();
 }
