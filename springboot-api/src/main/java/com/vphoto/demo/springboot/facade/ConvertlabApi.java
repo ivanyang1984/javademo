@@ -54,10 +54,10 @@ public interface ConvertlabApi {
             @ApiImplicitParam(name = "listId", value = "listId", required = true, dataType = "String", paramType = "path"),
             @ApiImplicitParam(name = "rows", value = "rows", dataType = "Long", paramType = "path")
     })
-    @RequestMapping(value = {"/convertlab/groupmembers/{listId}/{rows}"},
+    @RequestMapping(value = {"/convertlab/groupmembers/{listId}"},
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
-    ReturnResult<List<GroupMember>> getConvertlabGroupmembers(@PathVariable("listId") String listId, @PathVariable(value = "rows",required = false) String rows);
+    ReturnResult<List<GroupMember>> getConvertlabGroupmembers(@PathVariable("listId") String listId, @PathVariable String rows);
 
 
     @ApiOperation(value = "获取Convertlab 单个客户数据",
@@ -112,9 +112,40 @@ public interface ConvertlabApi {
     @ApiOperation(value = "获取Convertlab 获取推广计划",
             produces = MediaType.APPLICATION_JSON_VALUE,
             httpMethod = "GET",
-            notes="hhttps://app.convertlab.com/referplan/new?accountId=1369&isOpen=1&page=1&rows=20&sidx=dateCreated&sord=desc")
+            notes="https://app.convertlab.com/referplan/new?accountId=1369&isOpen=1&page=1&rows=20&sidx=dateCreated&sord=desc")
     @RequestMapping(value = {"/convertlab/allFissionReferPlan"},
             method = {RequestMethod.GET},
             produces = {MediaType.APPLICATION_JSON_VALUE})
     ReturnResult<List<FissionReferPlan>> getAllFissionReferPlan();
+
+
+    @ApiOperation(value = "获取Convertlab 获取全部事件定义",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://app.convertlab.com/meta/getEventTypes")
+    @RequestMapping(value = {"/convertlab/allCustomerEventsDefinition"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<ConvertlabEventsGroup>> getAllCustomerEventsDefinition();
+
+    @ApiOperation(value = "获取Convertlab 获取事件流水 默认第一页 20条",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/customerevents")
+    @RequestMapping(value = {"/convertlab/eventStatements"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<List<ConvertlabCustomerEventsStatement>> getEventStatements(@PathVariable String eventName, @PathVariable String rows, @PathVariable String page);
+
+    @ApiOperation(value = "获取Convertlab 获取事件流水 指定流水ID",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            httpMethod = "GET",
+            notes="https://api.convertlab.com/v1/customerevents/128511704552656896")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "eventStatementId", value = "eventStatementId", required = true, dataType = "String", paramType = "path")
+    })
+    @RequestMapping(value = {"/convertlab/singleEventStatement/{eventStatementId}"},
+            method = {RequestMethod.GET},
+            produces = {MediaType.APPLICATION_JSON_VALUE})
+    ReturnResult<ConvertlabCustomerEventsStatement> getSingleEventStatement(@PathVariable("eventStatementId") String eventStatementId);
 }

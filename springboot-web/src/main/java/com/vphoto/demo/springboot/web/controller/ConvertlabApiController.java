@@ -174,7 +174,7 @@ public class ConvertlabApiController implements ConvertlabApi {
     }
 
     @Override
-    public ReturnResult<List<GroupMember>> getConvertlabGroupmembers(@PathVariable  String listId, @PathVariable(value="rows",required = false) String rows) {
+    public ReturnResult<List<GroupMember>> getConvertlabGroupmembers(@PathVariable  String listId, String rows) {
         ReturnResult<List<GroupMember>> returnResult = new ReturnResult<List<GroupMember>>(ResultEnum.SUCCESS);
         //！ 刷新token
         String token = this.refreshAccessToken();
@@ -182,8 +182,10 @@ public class ConvertlabApiController implements ConvertlabApi {
         String requestUrl = CONVERTLAB_GROUP_MEMBERS+"?access_token="+ token;
         Map<String, String> param = new HashMap<String, String>();
         param.put("listId", listId);
-        if (!"".equals(rows) && !"undefined".equals(rows) && Long.parseLong(rows) > 0) {
+        if (null != rows && !"".equals(rows)) {
             param.put("rows", rows);
+        }else {
+            param.put("rows", "1000");
         }
         String resultJson = null;
         try {
@@ -475,5 +477,151 @@ public class ConvertlabApiController implements ConvertlabApi {
         }
 
         return resultString;
+    }
+
+
+    @Override
+    public ReturnResult<List<ConvertlabEventsGroup>> getAllCustomerEventsDefinition() {
+        ReturnResult<List<ConvertlabEventsGroup>> resultString = new ReturnResult<List<ConvertlabEventsGroup>>(ResultEnum.SUCCESS);
+
+        // 登陆 Url
+        String loginUrl = "https://app.convertlab.com/login.html";
+        // 需登陆后访问的 Url
+        String dataUrl = "https://app.convertlab.com/index.html?showMyTenants=true";
+        HttpClient httpClient = new HttpClient();
+
+        // 模拟登陆，按实际服务器端要求选用 Post 或 Get 请求方式
+        PostMethod postMethod = new PostMethod(loginUrl);
+
+        // 设置登陆时要求的信息，用户名和密码
+        NameValuePair[] data = {
+                new NameValuePair("username", "13816209387"),
+                new NameValuePair("password", "Hello1234")
+        };
+        postMethod.setRequestBody(data);
+        try {
+            // 设置 HttpClient 接收 Cookie,用与浏览器一样的策略
+            httpClient.getParams().setCookiePolicy(CookiePolicy.BROWSER_COMPATIBILITY);
+            int statusCode=httpClient.executeMethod(postMethod);
+
+            // 获得登陆后的 Cookie
+            Cookie[] cookies = httpClient.getState().getCookies();
+            StringBuffer tmpcookies = new StringBuffer();
+            for (Cookie c : cookies) {
+                tmpcookies.append(c.toString() + ";");
+                System.out.println("cookies = "+c.toString());
+            }
+            if(statusCode==302){//重定向到新的URL
+                System.out.println("模拟登录成功");
+                // 进行登陆后的操作
+                GetMethod getMethod = new GetMethod(dataUrl);
+                // 每次访问需授权的网址时需带上前面的 cookie 作为通行证
+                getMethod.setRequestHeader("cookie", tmpcookies.toString());
+                // 你还可以通过 PostMethod/GetMethod 设置更多的请求后数据
+                // 例如，referer 从哪里来的，UA 像搜索引擎都会表名自己是谁，无良搜索引擎除外
+                postMethod.setRequestHeader("Referer", "https://app.convertlab.com/login.html");
+                postMethod.setRequestHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.63 Safari/537.36");
+                httpClient.executeMethod(getMethod);
+                // 打印出返回数据，检验一下是否成功
+                String text = getMethod.getResponseBodyAsString();
+//                System.out.println(text);
+
+                //! 尝试获取想要的接口
+                Map<String,String> headers = new HashMap<String,String>();
+                headers.put("host","app.convertlab.com");
+                headers.put("tenantId","1587");
+                headers.put("cookie",tmpcookies.toString());
+                headers.put("Referer","https://app.convertlab.com/application/plugin/refer/public.html");
+                headers.put("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36");
+
+                String testJson = HttpUtils.sendGet(CONVERTLAB_ALL_EVENTS,null, headers);
+                List<ConvertlabEventsGroup> groupEvents = JSONArray.parseArray(testJson, ConvertlabEventsGroup.class);
+                resultString.setMsg("SUCCESS");
+                resultString.setData(groupEvents);
+                resultString.setCode(ResultEnum.SUCCESS.getCode());
+
+            }
+            else {
+                System.out.println("登录失败");
+            }
+        }
+        catch (Exception e) {
+            resultString.setCode(ResultEnum.FAILURE.getCode());
+            resultString.setMsg("FAILED:"+e.getCause().toString());
+        }
+
+        return resultString;
+    }
+
+    @Override
+    public ReturnResult<List<ConvertlabCustomerEventsStatement>> getEventStatements(String eventName, String rows, String page) {
+        ReturnResult<List<ConvertlabCustomerEventsStatement>> returnResult = new ReturnResult<List<ConvertlabCustomerEventsStatement>>(ResultEnum.SUCCESS);
+        if ("".equals(eventName)) {
+            returnResult.setData(null);
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            returnResult.setMsg("eventName is empty!");
+            return returnResult;
+        }
+        //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_EVENT_STATEMENTS +"?access_token="+ token;
+        Map<String,String> param = new HashMap<String,String>();
+        param.put("referPlan", eventName);
+        param.put("rows", null != rows?rows:"20");
+        param.put("page", null != page?page:"1");
+
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl,param);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                List<ConvertlabCustomerEventsStatement> eventsStatementsResult = JSONArray.parseArray(resultJson, ConvertlabCustomerEventsStatement.class);
+
+                if (eventsStatementsResult != null) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(eventsStatementsResult);
+                    returnResult.setMsg("SUCCESS size:"+eventsStatementsResult.size());
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+        return returnResult;
+    }
+
+    @Override
+    public ReturnResult<ConvertlabCustomerEventsStatement> getSingleEventStatement(@PathVariable  String eventStatementId) {
+        ReturnResult<ConvertlabCustomerEventsStatement> returnResult = new ReturnResult<ConvertlabCustomerEventsStatement>(ResultEnum.SUCCESS);
+        if ("".equals(eventStatementId)) {
+            returnResult.setData(null);
+            returnResult.setCode(ResultEnum.PARAM_ERROR.getCode());
+            returnResult.setMsg("eventStatementId is empty!");
+            return returnResult;
+        }
+        //！ 刷新token
+        String token = this.refreshAccessToken();
+        //！ 执行post请求
+        String requestUrl = CONVERTLAB_SINGLE_EVENT_STATEMENT+ eventStatementId +"?access_token="+ token;
+
+        String resultJson = null;
+        try {
+            resultJson = HttpUtils.doGet(requestUrl,null);
+            if (resultJson != null) {
+                System.out.println(resultJson);
+                ConvertlabCustomerEventsStatement eventsStatementsResult = JSON.parseObject(resultJson, ConvertlabCustomerEventsStatement.class);
+
+                if (eventsStatementsResult != null) {
+                    returnResult.setCode(ResultEnum.SUCCESS.getCode());
+                    returnResult.setData(eventsStatementsResult);
+                    returnResult.setMsg("SUCCESS");
+                }
+            }
+        }catch (Exception e) {
+            returnResult.setCode(ResultEnum.FAILURE.getCode());
+            returnResult.setMsg("FAILED:"+e.getCause().toString());
+        }
+        return returnResult;
     }
 }

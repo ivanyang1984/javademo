@@ -135,4 +135,11 @@ public class AppConstants {
     public static final String CONVERTLAB_REFERRAL_DETAILS = "https://api.convertlab.com/v1/referralDetails";
 
     public static final String CONVERTLAB_REFER_PLAN = "https://app.convertlab.com/referplan/new?accountId=1369&isOpen=1&page=1&rows=20&sidx=dateCreated&sord=desc";
+
+    public static final String CONVERTLAB_ALL_EVENTS = "https://app.convertlab.com/meta/getEventTypes";
+
+    public static final String CONVERTLAB_EVENT_STATEMENTS = "https://api.convertlab.com/v1/customerevents";
+
+    public static final String CONVERTLAB_SINGLE_EVENT_STATEMENT = "https://api.convertlab.com/v1/customerevents/";
+
 }
