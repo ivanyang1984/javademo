@@ -6,6 +6,6 @@ WORKDIR /opt/apps
 ADD ./vphotobi.zip ./
 RUN /usr/bin/unzip ./vphotobi.zip
 
-EXPOSE 10000
+EXPOSE 20000
 
 CMD ["sh","-c","./bin/single.sh","start"]
